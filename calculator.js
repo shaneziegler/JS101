@@ -31,3 +31,4 @@ if (operation === '1') {
 }
 
 console.log(`The result is: ${output}`);
+    
