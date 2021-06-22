@@ -6,30 +6,56 @@
 // Perform the calculation
 // Output code to the console
 
+function prompt(message) {
+  console.log(`=> ${message}`);
+}
+
+function invalidNumber(num) {
+  return Number.isNaN(Number(num)) || num.trim() === '';
+}
+
 const readline = require('readline-sync');
 
-console.log("Welcome to the calculator!");
+prompt("Welcome to the calculator!");
 
-// console.log("Whats the first number?");
+prompt("Whats the first number?");
+let number1 = readline.question();
 
-let number1 = readline.question("Whats the first number?");
-console.log(number1);
+while (invalidNumber(number1)) {
+  prompt("That is not a valid number, enter a valid number.");
+  number1 = readline.question();
+}
 
-let number2 = readline.question("Whats the second number?");
-console.log(number2);
+prompt("Whats the second number?");
+let number2 = readline.question();
 
-console.log('What operation would you like to perform?\n1) Add 2) Subtract 3) Multiply 4) Divide');
+while (invalidNumber(number2)) {
+  prompt("That is not a valid number, enter a valid number.");
+  number2 = readline.question();
+}
+
+prompt("What operation would you like to perform?\n1) Add 2) Subtract 3) Multiply 4) Divide");
 let operation = readline.question();
 
+while (!['1','2','3','4'].includes(operation)) {
+  prompt("That is not a valid operation, please choose 1, 2, 3, or 4.");
+  operation = readline.question();
+}
+
 let output;
-if (operation === '1') {
-  output = Number(number1) + Number(number2);
-} else if (operation === '2') {
-  output = Number(number1) - Number(number2);
-} else if (operation === '3') {
-  output = Number(number1) * Number(number2);
-} else if (operation === '4') {
-  output = Number(number1) / Number(number2);
+switch (operation) {
+  case '1':
+    output = Number(number1) + Number(number2);
+    break;
+  case '2':
+    output = Number(number1) - Number(number2);
+    break;
+  case '3':
+    output = Number(number1) * Number(number2);
+    break;
+  case '4':
+    output = Number(number1) / Number(number2);
+    break;
 }
 
 console.log(`The result is: ${output}`);
