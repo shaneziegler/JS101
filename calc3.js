@@ -1,4 +1,15 @@
 // Add loop to program, so the user can do more than one calculation
+// Add external file for prompts
+// Add internationalization to prompts
+
+
+const locale = Intl.DateTimeFormat().resolvedOptions().locale;
+const language = locale.split('-')[0];
+
+const fs = require('fs');
+
+let rawdata = fs.readFileSync('calc_cfg.json');
+const MESSAGES = JSON.parse(rawdata);
 
 function prompt(message) {
   console.log(`=> ${message}`);
@@ -13,29 +24,29 @@ let runAgain;
 do {
   const readline = require('readline-sync');
 
-  prompt("Welcome to the calculator!");
+  prompt(MESSAGES[language].welcome);
 
-  prompt("Whats the first number?");
+  prompt(MESSAGES[language].first);
   let number1 = readline.question();
 
   while (invalidNumber(number1)) {
-    prompt("That is not a valid number, enter a valid number.");
+    prompt(MESSAGES[language].invalidNumber);
     number1 = readline.question();
   }
 
-  prompt("Whats the second number?");
+  prompt(MESSAGES[language].second);
   let number2 = readline.question();
 
   while (invalidNumber(number2)) {
-    prompt("That is not a valid number, enter a valid number.");
+    prompt(MESSAGES[language].invalidNumber);
     number2 = readline.question();
   }
 
-  prompt("What operation would you like to perform?\n1) Add 2) Subtract 3) Multiply 4) Divide");
+  prompt(MESSAGES[language].operation);
   let operation = readline.question();
 
   while (!['1','2','3','4'].includes(operation)) {
-    prompt("That is not a valid operation, please choose 1, 2, 3, or 4.");
+    prompt(MESSAGES[language].invalidOperation);
     operation = readline.question();
   }
 
@@ -55,9 +66,10 @@ do {
       break;
   }
 
-  console.log(`The result is: ${output}`);
+  console.log(MESSAGES[language].result + ` ${output}`);
 
-  prompt("If you would like to run the calculator program again, type in yes:");
+  prompt(MESSAGES[language].runAgain);
   runAgain = readline.question();
 
 } while (runAgain.trim().toLowerCase() === 'yes');
+
