@@ -1,2 +1,8 @@
 JS101 - Small Problems
 
+Different way to do is it odd?
+const isOdd = int => !!(int % 2);
+the double bang !! operator coerces the result to a boolean value and is not affected by negative integers so it does not need Math.abs()
+Works because any non-zero result is truthy while 0 is falsy
+
+
