@@ -1,6 +1,6 @@
 // JS101 - Small Problems
 // Easy 1
-//
+// Odd numbers
 
 // PEDAC
 // PEDAC stands for “[Understand the] Problem, Examples / Test Cases, Data Structure, Algorithm, and Code.” 
@@ -12,6 +12,8 @@
 // - Make the requirements explicit
 // - Identify rules
 // - Mental model of the problem (optional)
+
+// Log all odd numbers from 1 to 99, inclusive, to the console, with each number on a separate line.
 
 // Examples/Test Case
 // - Validate understanding of the problem
@@ -31,8 +33,19 @@
 // You may assume that the argument is a valid integer value.
 
 // Inputs:
-//
+// all numbers from 1 to 99
 
 // Outputs:
-//
+// log number to console if it's odd
+
+function isOdd(num) {
+  return !!(num % 2);
+}
+
+for (let number = 1; number <= 99; number++) {
+  if (isOdd(number)) {
+    console.log(number);
+  }
+}
+
 
