@@ -6,3 +6,9 @@ the double bang !! operator coerces the result to a boolean value and is not aff
 Works because any non-zero result is truthy while 0 is falsy
 
 
+Better solution to finding odd numbers 1-99, just increment 2 at a time.
+
+for (let number = 1; number <= 99; number += 2) {
+  console.log(number);
+}
+
