@@ -1,0 +1,23 @@
+{
+  "en": { 
+    "welcome": "Welcome to the mortgage loan calculator!\n",
+    "principal": "What is the amount of the loan?",
+    "interestRate": "What is interest rate/APR?",
+    "loanLength": "Whats the loan length",
+    "loanLengthYears": "Enter the number years of the loan",
+    "loanLengthMonths": "Enter the number months of the loan",
+    "invalidNumber": "That is not a valid number, enter a valid number.",
+    "runAgain":"If you would like to run the mortgage calculator program again (y/n)?",
+    "result": "The result is: "
+  },
+  "fr": { 
+    "welcome": "Welcome to the calculator!",
+    "first": "Whats the first number?",
+    "second": "Whats the second number?",
+    "operation": "What operation would you like to perform?\n1) Add 2) Subtract 3) Multiply 4) Divide",
+    "invalidNumber": "That is not a valid number, enter a valid number.",
+    "invalidOperation": "That is not a valid operation, please choose 1, 2, 3, or 4.",
+    "runAgain":"If you would like to run the calculator program again, type in yes:",
+    "result": "The result is: "
+  }
+}
