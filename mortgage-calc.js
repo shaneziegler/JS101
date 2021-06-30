@@ -29,13 +29,18 @@
 // console.log(m.toFixed(2));
 
 const locale = Intl.DateTimeFormat().resolvedOptions().locale;
-// const locale = 'en-US';
-const language = locale.split('-')[0];
+//const locale = 'ex-uk';
+let language = locale.split('-')[0];
 
 const fs = require('fs');
 
 let rawdata = fs.readFileSync('mortgage_calc_messages.json');
 const MESSAGES = JSON.parse(rawdata);
+
+if (!(language in MESSAGES)) {
+  language = 'default';
+}
+console.log(language);
 
 const readline = require('readline-sync');
 
@@ -44,7 +49,7 @@ function prompt(message) {
 }
 
 function invalidNumber(num) {
-  return Number.isNaN(Number(num)) || num.trim() === '';
+  return Number.isNaN(Number(num)) || num.trim() === '' || Number(num) < 0;
 }
 
 let runAgain;
@@ -64,23 +69,24 @@ do {
   let interestRateAnnual = readline.question();
 
   while (invalidNumber(interestRateAnnual)) {
-    prompt(MESSAGES[language].interestRate);
+    prompt(MESSAGES[language].invalidNumber);
     interestRateAnnual = readline.question();
   }
 
   prompt(MESSAGES[language].loanLength);
-  let loanLength = readline.question();
+  let loanLengthInYears = readline.question();
 
-  while (invalidNumber(loanLength)) {
-    prompt(MESSAGES[language].loanLength);
-    loanLength = readline.question();
+  while (invalidNumber(loanLengthInYears)) {
+    prompt(MESSAGES[language].invalidNumber);
+    loanLengthInYears = readline.question();
   }
 
+  let loanLengthInMonths = loanLengthInYears * 12;
   let interestRateMonthly = (interestRateAnnual / 100) / 12;
 
-  let m = principal * (interestRateMonthly /
-    (1 - Math.pow((1 + interestRateMonthly), (-loanLength))));
-  console.log(MESSAGES[language].result + ` ${m.toFixed(2)}\n`);
+  let monthlyPayment = principal * (interestRateMonthly /
+    (1 - Math.pow((1 + interestRateMonthly), (-loanLengthInMonths))));
+  console.log(MESSAGES[language].result + `${monthlyPayment.toFixed(2)}\n`);
 
   prompt(MESSAGES[language].runAgain);
   runAgain = readline.question();
