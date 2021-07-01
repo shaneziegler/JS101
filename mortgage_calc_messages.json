@@ -2,33 +2,24 @@
   "en": { 
     "welcome": "Welcome to the mortgage loan calculator!\n",
     "principal": "What is the amount of the loan?",
-    "interestRate": "What is interest rate/APR? (Example: Enter 5.75% as 5.75",
-    "loanLength": "What is the loan length in year?",
-    "loanLengthYears": "Enter the number years of the loan",
-    "loanLengthMonths": "Enter the number months of the loan",
+    "interestRate": "What is interest rate/APR? (Example: Enter 5.75% as 5.75)",
+    "loanLength": "What is the loan length in years?",
     "invalidNumber": "That is not a valid number, enter a valid number.",
+    "invalidLoanTerm": "Loan length must be a valid number and greater than 0, enter a valid number of years",
     "runAgain":"If you would like to run the mortgage calculator program again (y/n)?",
     "result": "The monthly payment would be: $"
   },
   "fr": { 
-    "welcome": "Welcome to the calculator!",
-    "first": "Whats the first number?",
-    "second": "Whats the second number?",
-    "operation": "What operation would you like to perform?\n1) Add 2) Subtract 3) Multiply 4) Divide",
-    "invalidNumber": "That is not a valid number, enter a valid number.",
-    "invalidOperation": "That is not a valid operation, please choose 1, 2, 3, or 4.",
-    "runAgain":"If you would like to run the calculator program again, type in yes:",
-    "result": "The result is: "
+   
   },
   "default": { 
     "welcome": "Welcome to the mortgage loan calculator!\n",
     "principal": "What is the amount of the loan?",
-    "interestRate": "What is interest rate/APR?",
-    "loanLength": "Whats the loan length",
-    "loanLengthYears": "Enter the number years of the loan",
-    "loanLengthMonths": "Enter the number months of the loan",
+    "interestRate": "What is interest rate/APR? (Example: Enter 5.75% as 5.75)",
+    "loanLength": "What is the loan length in years?",
     "invalidNumber": "That is not a valid number, enter a valid number.",
+    "invalidLoanTerm": "Loan length must be a valid number and greater than 0, enter a valid number of years",
     "runAgain":"If you would like to run the mortgage calculator program again (y/n)?",
-    "result": "The result is: "
+    "result": "The monthly payment would be: $"
   }
 }

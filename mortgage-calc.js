@@ -1,48 +1,23 @@
 // JS101 - Assigment
 // Mortgage Calculator
 
-// Get loan amount - convert to float - check if input is Valid
-// Get APR in format like 5.25 - check if input is Valid
-// Get loan duration in years/month as 2 inputs - check if input is valid
-// Convert loan duration to number of months
-// convert APR to monthly interest rate
-// Calc payment
-// let m = p * (j / (1 - Math.pow((1 + j), (-n))));
-// m = monthly payment
-// p = loan amount
-// j = monthly interest rate
-// n = loan duration in months
+function setPromptsLanguage() {
+  // Set language for prompts from default locale
+  const locale = Intl.DateTimeFormat().resolvedOptions().locale;
+  //const locale = 'ex-uk';
+  let language = locale.split('-')[0];
 
-// Inputs:
-// loan amount
-// Annual Percentage Rate (APR) in format like 5.25
-// loan duration
+  const fs = require('fs');
 
-// Outputs:
-// monthly interest rate
-// loan duration in months
+  let rawdata = fs.readFileSync('mortgage_calc_messages.json');
+  let messages = JSON.parse(rawdata);
 
-// let p = 1000;
-// let j = (10.0 / 100) / 12.0;
-// let n = 12;
-// let m = p * (j / (1 - Math.pow((1 + j), (-n))));
-// console.log(m.toFixed(2));
-
-const locale = Intl.DateTimeFormat().resolvedOptions().locale;
-//const locale = 'ex-uk';
-let language = locale.split('-')[0];
-
-const fs = require('fs');
-
-let rawdata = fs.readFileSync('mortgage_calc_messages.json');
-const MESSAGES = JSON.parse(rawdata);
-
-if (!(language in MESSAGES)) {
-  language = 'default';
+  // Set language to our default, if we don't have messages for their language
+  if (!(language in messages)) {
+    language = 'default';
+  }
+  return messages[language];
 }
-console.log(language);
-
-const readline = require('readline-sync');
 
 function prompt(message) {
   console.log(`=> ${message}`);
@@ -52,43 +27,78 @@ function invalidNumber(num) {
   return Number.isNaN(Number(num)) || num.trim() === '' || Number(num) < 0;
 }
 
-let runAgain;
-
-do {
-
-  prompt(MESSAGES[language].welcome);
-  prompt(MESSAGES[language].principal);
-  let principal = readline.question();
-
-  while (invalidNumber(principal)) {
-    prompt(MESSAGES[language].invalidNumber);
-    principal = readline.question();
-  }
-
-  prompt(MESSAGES[language].interestRate);
+function getAPR(messages, readline) {
+  prompt(messages.interestRate);
   let interestRateAnnual = readline.question();
 
   while (invalidNumber(interestRateAnnual)) {
-    prompt(MESSAGES[language].invalidNumber);
+    prompt(messages.invalidNumber);
     interestRateAnnual = readline.question();
   }
+  return interestRateAnnual;
+}
 
-  prompt(MESSAGES[language].loanLength);
+function getLoanAmount(messages, readline) {
+  prompt(messages.principal);
+  let principal = readline.question();
+
+  while (invalidNumber(principal)) {
+    prompt(messages.invalidNumber);
+    principal = readline.question();
+  }
+  return principal;
+}
+
+function getLoanTerm(messages, readline) {
+  prompt(messages.loanLength);
   let loanLengthInYears = readline.question();
 
-  while (invalidNumber(loanLengthInYears)) {
-    prompt(MESSAGES[language].invalidNumber);
+  while (invalidNumber(loanLengthInYears) || Number(loanLengthInYears) === 0) {
+    prompt(messages.invalidLoanTerm);
     loanLengthInYears = readline.question();
   }
+  return loanLengthInYears;
+}
+
+function calculateMonthlyPayment(principal,
+  interestRateMonthly, loanLengthInMonths) {
+  let monthlyPayment;
+
+  if (interestRateMonthly === 0) {
+    monthlyPayment = principal / loanLengthInMonths;
+  } else {
+    monthlyPayment = principal * (interestRateMonthly /
+      (1 - Math.pow((1 + interestRateMonthly), (-loanLengthInMonths))));
+  }
+  return monthlyPayment;
+}
+
+
+function loanCalculator(messages, readline) {
+  let principal = Number(getLoanAmount(messages, readline));
+  let interestRateAnnual = Number(getAPR(messages, readline));
+  let loanLengthInYears = Number(getLoanTerm(messages, readline));
 
   let loanLengthInMonths = loanLengthInYears * 12;
   let interestRateMonthly = (interestRateAnnual / 100) / 12;
 
-  let monthlyPayment = principal * (interestRateMonthly /
-    (1 - Math.pow((1 + interestRateMonthly), (-loanLengthInMonths))));
-  console.log(MESSAGES[language].result + `${monthlyPayment.toFixed(2)}\n`);
+  let monthlyPayment = calculateMonthlyPayment(principal,
+    interestRateMonthly, loanLengthInMonths);
 
-  prompt(MESSAGES[language].runAgain);
+  console.log(messages.result + `${monthlyPayment.toFixed(2)}\n`);
+}
+
+// Start of program execution
+const MESSAGES = setPromptsLanguage();
+const readline = require('readline-sync');
+prompt(MESSAGES.welcome);
+
+let runAgain;
+
+do {
+  loanCalculator(MESSAGES, readline);
+
+  prompt(MESSAGES.runAgain);
   runAgain = readline.question();
 
 } while (runAgain.trim().toLowerCase()[0] === 'y');
