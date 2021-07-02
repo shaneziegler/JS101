@@ -60,7 +60,7 @@ function getLoanTerm(messages, readline) {
   return loanLengthInYears;
 }
 
-function doRunAgain(messages, readline) {
+function doRunAgainQuery(messages, readline) {
   prompt(messages.runAgain);
   let runAgain = readline.question().trim().toLowerCase();
   while (runAgain !== 'y' && runAgain !== 'n') {
@@ -108,6 +108,6 @@ let runAgain;
 do {
   loanCalculator(MESSAGES, readline);
 
-  runAgain = doRunAgain(MESSAGES, readline);
+  runAgain = doRunAgainQuery(MESSAGES, readline);
 
 } while (runAgain === 'y');
