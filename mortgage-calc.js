@@ -60,6 +60,16 @@ function getLoanTerm(messages, readline) {
   return loanLengthInYears;
 }
 
+function doRunAgain(messages, readline) {
+  prompt(messages.runAgain);
+  let runAgain = readline.question().trim().toLowerCase();
+  while (runAgain !== 'y' && runAgain !== 'n') {
+    prompt(messages.runAgain);
+    runAgain = readline.question().trim().toLowerCase();
+  }
+  return runAgain;
+}
+
 function calculateMonthlyPayment(principal,
   interestRateMonthly, loanLengthInMonths) {
   let monthlyPayment;
@@ -98,7 +108,6 @@ let runAgain;
 do {
   loanCalculator(MESSAGES, readline);
 
-  prompt(MESSAGES.runAgain);
-  runAgain = readline.question();
+  runAgain = doRunAgain(MESSAGES, readline);
 
-} while (runAgain.trim().toLowerCase()[0] === 'y');
+} while (runAgain === 'y');
