@@ -14,3 +14,5 @@ while (c <= 50) {
     console.log(a);
   }
 }
+
+//ok
