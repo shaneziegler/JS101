@@ -4,7 +4,6 @@
 function setPromptsLanguage() {
   // Set language for prompts from default locale
   const locale = Intl.DateTimeFormat().resolvedOptions().locale;
-  // const locale = 'fr-CA'; // For testing other locales
   let language = locale.split('-')[0];
 
   const fs = require('fs');
@@ -12,7 +11,6 @@ function setPromptsLanguage() {
   let rawdata = fs.readFileSync('mortgage_calc_messages.json');
   let messages = JSON.parse(rawdata);
 
-  // Set language to our default, if we don't have messages for their language
   if (!(language in messages)) {
     language = 'default';
   }
@@ -109,16 +107,11 @@ function loanCalculator(messages, readline) {
 }
 
 
-// Start of main program execution
 const MESSAGES = setPromptsLanguage();
 const readline = require('readline-sync');
 prompt(MESSAGES.welcome);
 
-let runAgain = false;
-
 do {
-  loanCalculator(MESSAGES, readline);
+  loanCalculator(MESSAGES, readline)
 
-  runAgain = runCalculatorAgain(MESSAGES, readline);
-
-} while (runAgain);
+} while (runCalculatorAgain(MESSAGES, readline));
