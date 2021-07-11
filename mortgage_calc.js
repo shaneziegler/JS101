@@ -112,6 +112,6 @@ const readline = require('readline-sync');
 prompt(MESSAGES.welcome);
 
 do {
-  loanCalculator(MESSAGES, readline)
+  loanCalculator(MESSAGES, readline);
 
 } while (runCalculatorAgain(MESSAGES, readline));
