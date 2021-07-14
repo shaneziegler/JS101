@@ -1,5 +1,5 @@
 const readline = require('readline-sync');
-const VALID_CHOICES = ['rock', 'paper', 'scissors'];
+const VALID_CHOICES = ['rock', 'paper', 'scissors', 'spock', 'lizard'];
 
 function prompt(message) {
   console.log(`=> ${message}`);
