@@ -1,56 +1,50 @@
 const readline = require('readline-sync');
 const VALID_CHOICES = ['rock', 'paper', 'scissors', 'spock', 'lizard'];
 
-function prompt(message) {
-  console.log(`=> ${message}`);
-}
-
-function displayWinner2(choice, computerChoice) {
-  prompt(`You chose ${choice}, computer chose ${computerChoice}`);
-
-  if ((choice === 'rock' && computerChoice === 'scissors') ||
-      (choice === 'paper' && computerChoice === 'rock') ||
-      (choice === 'scissors' && computerChoice === 'paper')) {
-    prompt('You win!');
-  } else if ((choice === 'rock' && computerChoice === 'paper') ||
-             (choice === 'paper' && computerChoice === 'scissors') ||
-             (choice === 'scissors' && computerChoice === 'rock')) {
-    prompt('Computer wins!');
-  } else {
-    prompt("It's a tie!");
-  }
-}
-
-// const WINNING_COMBOS = {
-//   rock:     ['scissors', 'lizard'],
-//   paper:    ['rock',     'spock'],
-//   scissors: ['paper',    'lizard'],
-//   lizard:   ['paper',    'spock'],
-//   spock:    ['rock',     'scissors'],
-// };
-
 const WINNING_COMBOS = {
   rock:     ['scissors', 'lizard'],
   paper:    ['rock',     'spock'],
   scissors: ['paper',    'lizard'],
+  lizard:   ['paper',    'spock'],
+  spock:    ['rock',     'scissors'],
 };
+
+const SCORES = {
+  playerScore: 0,
+  computerScore: 0
+};
+
+const NUMBER_OF_ROUND_WINS = 3;
+
+function prompt(message) {
+  console.log(`=> ${message}`);
+}
 
 function playerWins(choice, computerChoice) {
   return WINNING_COMBOS[choice].includes(computerChoice);
 }
 
 function displayWinner(choice, computerChoice) {
-  prompt(`You chose ${choice}, computer chose ${computerChoice}`);
+  prompt(`You chose ${choice}, computer chose ${computerChoice}.`);
   if (playerWins(choice, computerChoice)) {
-    prompt('You win!');
+    prompt('You win this round!');
   } else if (choice === computerChoice) {
     prompt("It's a tie!");
   } else {
-    prompt("Computer wins!");
+    prompt("Computer wins this round!");
   }
 }
 
-while (true) {
+function updateScores(choice, computerChoice) {
+  if (playerWins(choice, computerChoice)) {
+    SCORES.playerScore += 1;
+  } else if (playerWins(computerChoice, choice)) {
+    SCORES.computerScore += 1;
+  }
+}
+
+function playRound(roundNumber) {
+  prompt(`ROUND ${roundNumber} - First to ${NUMBER_OF_ROUND_WINS} wins the match.`);
   prompt(`Choose one: ${VALID_CHOICES.join(', ')}`);
   let choice = readline.question();
 
@@ -63,6 +57,27 @@ while (true) {
   let computerChoice = VALID_CHOICES[randomIndex];
 
   displayWinner(choice, computerChoice);
+  updateScores(choice, computerChoice, SCORES);
+}
+
+function displayScore() {
+  prompt(`Player Score: ${SCORES.playerScore}`);
+  prompt(`Computer Score: ${SCORES.computerScore}\n`);
+}
+
+
+while (true) {
+  console.clear();
+  let currentRound = 1;
+  SCORES.playerScore = 0;
+  SCORES.computerScore = 0;
+
+  while (SCORES.playerScore < NUMBER_OF_ROUND_WINS
+    && SCORES.computerScore < NUMBER_OF_ROUND_WINS) {
+    playRound(currentRound);
+    displayScore();
+    currentRound += 1;
+  }
 
   prompt('Do you want to play again (y/n)?');
   let answer = readline.question().toLowerCase();
