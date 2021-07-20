@@ -6,7 +6,7 @@
 // numbers.sort((num1, num2) => num2 - num1);
 // console.log(numbers); // [ 5, 4, 3, 2, 1 ]
 
-
+// Reverse array using slice() without mutating org array
 let numbers = [1, 2, 3, 4, 5];
 let newNumbers = numbers.slice().reverse();
 console.log(newNumbers);
@@ -26,3 +26,27 @@ console.log(newNumbers);
 //   return 0;  // Do nothing
 // }
 
+
+// Reverse array using spread without mutating org array
+let numbers = [1, 2, 3, 4, 5];
+let newNumbers = [...numbers].reverse();
+console.log(newNumbers);
+
+// Sort array without mutating orginal using spread syntax
+let numbers = [3, 4, 2, 1, 5];
+let newNumbers = [...numbers].sort((num1, num2) => num2 - num1);
+console.log(numbers); 
+console.log(newNumbers);
+
+//forEach
+let numbers = [1, 2, 3, 4, 5];
+let newNumbers = [];
+numbers.forEach(element => newNumbers.push(element));
+newNumbers.reverse();
+console.log(newNumbers);
+
+//forEach
+let numbers = [1, 2, 3, 4, 5];
+let newNumbers = [];
+numbers.forEach(element => newNumbers.unshift(element));
+console.log(newNumbers);
