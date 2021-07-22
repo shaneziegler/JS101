@@ -27,7 +27,7 @@ flintstones.push(["Bambam", "Pebbles"]);
 // flintstones = flintstones.reduce((accumlator, currentValue) => accumlator + ',' + currentValue).split(',');
 
 flintstones = flintstones.reduce((accumlator, currentValue) => {return accumlator.concat(currentValue)},[]);
-flintstones.split(',');
+// flintstones.split(',');
 
 flintstones = ["Fred", "Wilma"];
 flintstones.push(["Barney", "Betty"]);
@@ -60,8 +60,14 @@ flintstones.push(["Barney", "Betty"]);
 flintstones.push(["Bambam", "Pebbles"]);
 
 newArray = [];
+flintstones.forEach(element => newArray = newArray.concat(element));
 // flintstones.forEach(function (element) {
 //   newArray = newArray.concat(element)
 // });
 
-flintstones.forEach(element => newArray = newArray.concat(element));
+// flintstones.forEach(element => {
+//   console.log(element);
+//   newArray = newArray.concat(element);
+// });
+
+// flintstones.forEach(element => newArray = newArray.concat(element));
