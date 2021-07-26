@@ -12,3 +12,11 @@ for (let number = 1; number <= 99; number += 2) {
   console.log(number);
 }
 
+### Anytime the return is just true or false on an expression like this
+if ((year % 4 === 0) && ((year % 100 !== 0) || year % 400 === 0)) {
+  return true;
+} else {
+  return false;
+}
+### then just return the result of the expression instead
+return ((year % 4 === 0) && ((year % 100 !== 0) || year % 400 === 0))
