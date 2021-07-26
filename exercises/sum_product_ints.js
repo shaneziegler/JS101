@@ -1,6 +1,7 @@
 // JS101 - Small Problems
 // Easy 1
 // Sum or Product of Consecutive Integers
+
 // PEDAC
 // PEDAC stands for “[Understand the] Problem, Examples / Test Cases, Data Structure, Algorithm, and Code.” 
 // PEDAC has two primary objectives: process the problem (PEDA) and code with intent (C).
@@ -25,30 +26,52 @@
 // - Code
 // - Implementation of Algorithm
 
-// Write a function that takes one integer argument, which may be positive, negative, or zero. 
-// This method returns true if the number's absolute value is odd.
-// You may assume that the argument is a valid integer value.
+// Write a program that asks the user to enter an integer greater than 0, 
+// then asks whether the user wants to determine the sum or the product of 
+// all numbers between 1 and the entered integer, inclusive.
 
 // Inputs:
-// Bill amount
-// Tip percentage
+// Integer greater than 0
+// "s" to computer sum or "p" to computer product
 
 // Outputs:
-// The tip amount formatted to $xx.xx
-// The total bill formatted to $xx.xx
+// Sum or product of consecutive integers
 
-// What is the bill? 200
-// What is the tip percentage? 15
+// Please enter an integer greater than 0: 5
+// Enter "s" to compute the sum, or "p" to compute the product. s
 
-// The tip is $30.00
-// The total is $230.00
+// The sum of the integers between 1 and 5 is 15.
+// OR
+// The product of the integers between 1 and 6 is 720.
+
+function sum_or_product_calc(int, operation) {
+  debugger;
+  if (int === 1) {
+    return 1;
+  } else {
+    if (operation === 's') {
+      return int + sum_or_product_calc(int - 1, operation);
+    }
+
+    if (operation === 'p') {
+      return int * sum_or_product_calc(int - 1, operation);
+    }
+  }
+}
 
 let readline = require('readline-sync');
 
-let bill = parseFloat(readline.question('What is the bill? '));
-let tipPercent = parseFloat(readline.question('What is the tip percentage? '));
+let inputInteger = parseInt(readline.question('Please enter an integer greater than 0: '));
+let operation = readline.question('Enter "s" to compute the sum, or "p" to compute the product. ');
 
-let tipAmount = bill * (tipPercent / 100);
+if (!['s','p'].includes(operation)) {
+  console.log('Unknown operation.');
+} else {
+  let result = sum_or_product_calc(inputInteger, operation);
+  console.log(`The ${(operation === 's') ? 'sum' : 'product'} of the integers between 1 and ${inputInteger} is ${result}.`);
+}
 
-console.log(`The tip is $${tipAmount.toFixed(2)}`);
-console.log(`The total is $${(bill + tipAmount).toFixed(2)}`);
+// Further Exploration
+// What if the input was an array of integers instead of just a single integer? 
+// How would your computeSum and computeProduct functions change? 
+// Given that the input is an array, how might you make use of the Array.prototype.reduce() method?
