@@ -19,4 +19,4 @@ if ((year % 4 === 0) && ((year % 100 !== 0) || year % 400 === 0)) {
   return false;
 }
 ### then just return the result of the expression instead
-return ((year % 4 === 0) && ((year % 100 !== 0) || year % 400 === 0))
+return ((year % 4 === 0) && ((year % 100 !== 0) || year % 400 === 0))let object = { first: [1] };
