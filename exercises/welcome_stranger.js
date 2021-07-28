@@ -51,8 +51,7 @@
 
 
 function greetings(nameArray, jobObject) {
-  let fullName = nameArray.reduce((fullName, partialName) => fullName + ' ' + partialName);
-  return `Hello, ${fullName}! Nice to have a ${jobObject.title} ${jobObject.occupation} around.`;
+  return `Hello, ${nameArray.join(' ')}! Nice to have a ${jobObject.title} ${jobObject.occupation} around.`;
 }
 
 console.log(
