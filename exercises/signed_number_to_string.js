@@ -43,6 +43,9 @@ function signedIntegerToString(int) {
 }
 
 
+// good student solution
+let signedIntegerToString = (num) => (num < 0 ? '-' + integerToString(Math.abs(num)) : integerToString(num));
+
 console.log(signedIntegerToString(4321) === "+4321");
 console.log(signedIntegerToString(-123) === "-123");
 console.log(signedIntegerToString(0) === "0");
