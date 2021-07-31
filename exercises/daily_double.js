@@ -8,17 +8,12 @@
 
 function crunch(str) {
   let resultString = '';
-  let arr = str.split('');
-  let index = 0;
 
-  arr.forEach(char => {
-    if (char !== resultString[index]) {
-      resultString += char;
-      index++;
+  for (let i = 0; i < str.length; i++) {
+    if (str[i] !== resultString[resultString.length - 1]) {
+      resultString += str[i];
     }
-  });
-
-
+  }
   return resultString;
 }
 
