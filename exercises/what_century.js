@@ -9,6 +9,7 @@
 // New centuries begin in years that end with 01.
 // So, the years 1901 - 2000 comprise the 20th century.
 
+//  Version using working on it as a string
 function century(year) {
   let century = String(~~((year - 1) / 100) + 1);
 
@@ -49,3 +50,23 @@ century(10103);       // "102nd"
 century(1052);        // "11th"
 century(1127);        // "12th"
 century(11201);       // "113th"
+
+
+// Version using working on it as a number
+function century(year) {
+  let century = ~~((year - 1) / 100) + 1;
+  let lastTwoDigits = century % 100;
+  let ending = '';
+
+  if (lastTwoDigits === 11 || lastTwoDigits === 12 || lastTwoDigits === 13) {
+    ending = 'th';
+  } else {
+    switch (century % 10) {
+      case 1: ending = 'st'; break;
+      case 2: ending = 'nd'; break;
+      case 3: ending = 'rd'; break;
+      default: ending = 'th';
+    }
+  }
+  return String(century) + ending;
+}
