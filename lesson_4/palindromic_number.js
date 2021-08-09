@@ -1,37 +1,19 @@
 // JS 101
 // Easy 4
-// Palindromic Strings
+// Palindromic Number
 
-// Write a function that returns true if the string passed as an argument is a palindrome, or false otherwise.
-// A palindrome reads the same forwards and backwards. For this problem, the case matters and all characters matter.
+// Write a function that returns true if its integer argument is palindromic, or false otherwise. 
+// A palindromic number reads the same forwards and backwards.
 
 function isPalindrome(string) {
   return string === string.split('').reverse().join('');
 }
 
-function isRealPalindrome(string) {
-  string = string.toLowerCase();
-  let newString = '';
-  for (let idx = 0; idx < string.length; idx++) {
-    if ((string[idx] >= 'a' && string[idx] <= 'z') || (string[idx] >= '0' && string[idx] <= '9')) {
-      newString = newString.concat(string[idx]);
-    }
-  }
-  // console.log(newString);
-  return isPalindrome(newString);
+function isPalindromicNumber(num) {
+  return isPalindrome(String(num));
 }
 
-isRealPalindrome('madam');               // true
-isRealPalindrome('Madam');               // true (case does not matter)
-isRealPalindrome("Madam, I'm Adam");     // true (only alphanumerics matter)
-isRealPalindrome('356653');              // true
-isRealPalindrome('356a653');             // true
-isRealPalindrome('123ab321');            // false
-
-
-// Alternate Launch solution using REGEX
-
-function isRealPalindrome(string) {
-  string = string.toLowerCase().replace(/[^a-z0-9]/g, "");
-  return isPalindrome(string);
-}
+isPalindromicNumber(34543);        // true
+isPalindromicNumber(123210);       // false
+isPalindromicNumber(22);           // true
+isPalindromicNumber(5);            // true
