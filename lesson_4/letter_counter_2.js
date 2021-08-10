@@ -18,11 +18,16 @@ function wordSizes(sentence) {
 }
 
 function removeNonLetters(string) {
-  string = string.replace(/[^a-zA-Z0-9]/g, "");
-  return string;
+  return string.replace(/[^a-zA-Z0-9]/g, "");
 }
 
 wordSizes('Four score and seven.');                       // { "3": 1, "4": 1, "5": 2 }
 wordSizes('Hey diddle diddle, the cat and the fiddle!');  // { "3": 5, "6": 3 }
 wordSizes("What's up doc?");                              // { "2": 1, "3": 1, "5": 1 }
 wordSizes('');                                            // {}
+
+
+// Try without using Regex
+function removeNonLetters(string) {
+  return string.split('').filter(char => (char >= 'a' && char <= 'z') || (char >= '0' && char <= '9') || (char >= 'A' && char <= 'Z')).join('');
+}
