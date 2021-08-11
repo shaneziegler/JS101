@@ -9,7 +9,7 @@
 // You may also assume that each string contains nothing but words and spaces,
 // and that there are no leading, trailing, or repeated spaces.
 
-function swap(str) {
+function swap2(str) {
   let words = str.split(' ');
   let swappedArr = words.map(word => {
     let firstLetter = word[0];
@@ -22,6 +22,26 @@ function swap(str) {
   });
   return swappedArr.join(' ');
 }
+
+function swap3(str) {
+  let swappedWordsArr = str.split(' ').map(word => {
+    let wordArr = word.split('');
+    [wordArr[0], wordArr[wordArr.length - 1]] =
+      [wordArr[wordArr.length - 1], wordArr[0]];
+    return wordArr.join('');
+  });
+  return swappedWordsArr.join(' ');
+}
+
+function swap(str) {
+  return str.split(' ').map(word => {
+    let wordArr = word.split('');
+    [wordArr[0], wordArr[wordArr.length - 1]] =
+      [wordArr[wordArr.length - 1], wordArr[0]];
+    return wordArr.join('');
+  }).join(' ');
+}
+
 
 swap('Oh what a wonderful day it is');  // "hO thaw a londerfuw yad ti si"
 swap('Abcde');                          // "ebcdA"
