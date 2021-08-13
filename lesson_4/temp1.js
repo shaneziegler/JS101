@@ -78,3 +78,5 @@ arr.length = 5;
 console.log(arr);              // [2, 4, 6, <2 empty items> ]
 console.log(arr.length);       // 5
 console.log(Object.keys(arr))  // ['0', '1', '2']
+
+//
