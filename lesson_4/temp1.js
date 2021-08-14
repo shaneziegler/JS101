@@ -80,3 +80,10 @@ console.log(arr.length);       // 5
 console.log(Object.keys(arr))  // ['0', '1', '2']
 
 //
+
+letterCount = {};
+statement.split('').forEach(letter => {
+  if (letter !== ' ') {
+    letterCount[letter] ? letterCount[letter] += 1 : letterCount[letter] = 1;
+  }
+});
