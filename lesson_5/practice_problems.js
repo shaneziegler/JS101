@@ -234,3 +234,10 @@ arr.sort((a,b) => {
       }}, 0)
 });
 
+
+arr.sort((a,b) => {
+  return a.reduce((oddSum, elm) => 
+    ((elm % 2) === 1 ? oddSum += elm : oddSum), 0) - 
+	  b.reduce((oddSum, elm) => 
+    ((elm % 2) === 1 ? oddSum += elm : oddSum), 0);
+});
