@@ -149,9 +149,88 @@ Object.values(obj).forEach(arr => {
 
 // 9. Given the following data structure, return a new array with the same structure, 
 // but with the values in each subarray ordered -- alphabetically or numerically as appropriate -- in ascending order.
-//! still needs work
-//! need to not mutate the org array
+
 let arr = [['b', 'c', 'a'], [2, 11, -3], ['blue', 'black', 'green']];
 
-let sortedArr = arr.map(innerArr => typeof innerArr[0] === 'string' ? innerArr.sort() : innerArr.sort((a, b) => a - b));
+let sortedArr = arr.map(innerArr => typeof innerArr[0] === 'string' ? innerArr.slice().sort() : innerArr.slice().sort((a, b) => a - b));
+
+// LS solution
+arr.map(subArr => {
+  if (typeof subArr[0] === 'string') {
+    // we have an array of strings
+    return subArr.slice().sort();
+  } else {
+    // we have an array of numbers
+    return subArr.slice().sort((a, b) => a - b);
+  }
+});
+
+// 10. Perform the same transformation of sorting the subarrays we did in the previous exercise with one difference;
+// sort the elements in descending order.
+//! rewrite using sort only instead of sort.reverse - dont look at ls solution
+
+let arr = [['b', 'c', 'a'], [2, 11, -3], ['blue', 'black', 'green']];
+
+let sortedArr = arr.map(innerArr => typeof innerArr[0] === 'string' ? innerArr.slice().sort().reverse() : innerArr.slice().sort((a, b) => b - a));
+
+// LS Solution
+arr.map(subArr => {
+  return subArr.slice().sort((a, b) => {
+    if (typeof a === 'number') {
+      return b - a;
+    }
+
+    if (a < b) {
+      return 1
+    } else if (a > b) {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
+});
+
+// 11. Given the following data structure, use the map method to return a new array identical in structure to the original but, 
+// with each number incremented by 1. Do not modify the original data structure.
+
+let arr = [{ a: 1 }, { b: 2, c: 3 }, { d: 4, e: 5, f: 6 }];
+
+let newArr = arr.map(subObj => {
+  let newObj = {};
+  for (prop in subObj) {
+    newObj[prop] = subObj[prop] + 1;
+  }
+  return newObj;
+});
+
+// 12. Given the following data structure, use a combination of methods, including filter, 
+// to return a new array identical in structure to the original, but containing only the numbers that are multiples of 3.
+
+let arr = [[2], [3, 5, 7], [9], [11, 15, 18]];
+
+newArr = arr.map(subArr => subArr.filter(elm => elm % 3 === 0));
+
+// 13. Given the following data structure, sort the array so that the sub-arrays are ordered based on the sum of the odd numbers that they contain.
+
+let arr = [[1, 6, 7], [1, 5, 3], [1, 8, 3]];
+
+//Since 1 + 3 < 1 + 7 < 1 + 5 + 3, the sorted array should look like this:
+[ [ 1, 8, 3 ], [ 1, 6, 7 ], [ 1, 5, 3 ] ]
+
+
+arr.sort((a,b) => {
+  console.log(a);
+  console.log(b);
+  a.reduce((oddSum, elm) => {
+    if (elm % 2 === 1) {
+      return oddSum += elm;
+    } else {
+      return oddSum;
+    }}, 0) - b.reduce((oddSum, elm) => {
+      if (elm % 2 === 1) {
+        return oddSum += elm;
+      } else {
+        return oddSum;
+      }}, 0)
+});
 
