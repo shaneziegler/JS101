@@ -234,7 +234,7 @@ arr.sort((a, b) => {
 });
 
 // 14. Given the following data structure write some code to return an array containing the colors of the fruits and the sizes of the vegetables.
-//  The sizes should be uppercase, and the colors should be capitalized.
+// The sizes should be uppercase, and the colors should be capitalized.
 
 let obj = {
   grape: { type: 'fruit', colors: ['red', 'green'], size: 'small' },
