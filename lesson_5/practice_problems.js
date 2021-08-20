@@ -217,7 +217,7 @@ let arr = [[1, 6, 7], [1, 5, 3], [1, 8, 3]];
 //Since 1 + 3 < 1 + 7 < 1 + 5 + 3, the sorted array should look like this:
 [ [ 1, 8, 3 ], [ 1, 6, 7 ], [ 1, 5, 3 ] ]
 
-
+// ! not working
 arr.sort((a,b) => {
   console.log(a);
   console.log(b);
