@@ -233,6 +233,7 @@ arr.sort((a, b) => {
   return oddSumA - oddSumB;
 });
 
+<<<<<<< HEAD
 // 14. Given the following data structure write some code to return an array containing the colors of the fruits and the sizes of the vegetables.
 //  The sizes should be uppercase, and the colors should be capitalized.
 
@@ -246,3 +247,13 @@ let obj = {
 
 // The return value should look like this:
 [["Red", "Green"], "MEDIUM", ["Red", "Green"], ["Orange"], "LARGE"]
+||||||| 719a41f
+=======
+
+arr.sort((a,b) => {
+  return a.reduce((oddSum, elm) => 
+    ((elm % 2) === 1 ? oddSum += elm : oddSum), 0) - 
+	  b.reduce((oddSum, elm) => 
+    ((elm % 2) === 1 ? oddSum += elm : oddSum), 0);
+});
+>>>>>>> 1d7a79e9240445c9c0f4ec3fa2b7bda5f429321b
