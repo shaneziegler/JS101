@@ -255,4 +255,59 @@ Object.values(obj).forEach(subObj => {
     newArr.push(subObj.size.toUpperCase());
   }
 });
-//!  do it without foreach   -  transformation is same numebr of elements
+//  done it without foreach, using map instead - transformation is same number of elements
+
+let newArr = Object.values(obj).map(subObj => {
+  if (subObj.type === 'fruit') {
+    return subObj.colors.map(color => color[0].toUpperCase() + color.slice(1).toLowerCase());
+  } else {
+    return subObj.size.toUpperCase();
+  }
+});
+
+
+// 15. Given the following data structure, write some code to return an array which contains only the objects where all the numbers are even.
+
+let arr = [
+  { a: [1, 2, 3] },
+  { b: [2, 4, 6], c: [3, 6], d: [4] },
+  { e: [8], f: [6, 10] },
+];
+
+let newArr = arr.filter(obj => Object.values(obj).flat().every(element => element % 2 === 0));
+
+// 16. Given the following data structure, write some code that returns an object where the key is the first item in each subarray,
+// and the value is the second.
+
+let arr = [['a', 1], ['b', 'two'], ['sea', {'c': 3}], ['D', ['a', 'b', 'c']]];
+
+// expected return value of function call
+// { a: 1, b: 'two', sea: { c: 3 }, D: [ 'a', 'b', 'c' ] }
+
+let obj = Object.fromEntries(arr);
+
+// using foreach
+
+let obj = {};
+arr.forEach(subArr => {
+  obj[subArr[0]] = subArr[1];
+})
+
+// 17. Each UUID consists of 32 hexadecimal characters (the digits 0-9 and the letters a-f) represented as a string. 
+// The value is typically broken into 5 sections in an 8-4-4-4-12 pattern, e.g., 'f65c57f6-a6aa-17a8-faa1-a67f2dc9fa91'.
+
+// Write a function that takes no arguments and returns a string that contains a UUID.
+
+function generateUUID() {
+  let pattern = '12345678-1234-1234-1234-123456789012';
+  let key = '0123456789abcdef';
+  return newStr = pattern.split('').map(elm => {
+    if (elm === '-') {
+      return elm;
+    } else {
+      let randomNum = Math.floor(Math.random() * key.length);
+      return key[randomNum];
+    }
+  }).join('');
+};
+
