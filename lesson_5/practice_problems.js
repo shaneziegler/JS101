@@ -311,3 +311,30 @@ function generateUUID() {
   }).join('');
 };
 
+
+
+
+// 12. Given the following data structure, use a combination of methods, including filter, 
+// to return a new array identical in structure to the original, but containing only the numbers that are multiples of 3.
+
+let arr = [[2], [3, 5, 7], [9], [11, 15, 18]];
+
+let newArr = arr.map(subArr => subArr.filter(elm => elm % 3 ===0));
+
+// 10. Perform the same transformation of sorting the subarrays we did in the previous exercise with one difference;
+// sort the elements in descending order.
+//! rewrite using sort only instead of sort.reverse - dont look at ls solution
+
+let arr = [['b', 'c', 'a'], [2, 11, -3], ['blue', 'black', 'green']];
+
+let newArr = arr.slice().map(subArr => subArr.sort((a, b) => {
+  if (typeof a === Number) {
+    return b - a};
+  
+  if (a < b) {
+    return 1;
+  } else if (b < a) {
+    return -1;
+  } else {
+    return 0;
+  }}));
