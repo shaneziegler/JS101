@@ -16,13 +16,13 @@
 // Index 0 is the place where the left side and right side are equal.
 
 // Test Cases
-console.log(findEvenIndex([1,2,3,4,3,2,1]) === 3); // true
-console.log(findEvenIndex([1,100,50,-51,1,1]) === 1); // true
-console.log(findEvenIndex([1,2,3,4,5,6]) === -1); // true
-console.log(findEvenIndex([20,10,30,10,10,15,35]) === 3); // true
-console.log(findEvenIndex([20,10,-80,10,10,15,35]) === 0); // true
-console.log(findEvenIndex([10,-80,10,10,15,35,20]) === 6); // true
-console.log(findEvenIndex([-1,-2,-3,-4,-3,-2,-1]) === 3); // true
+// console.log(findEvenIndex([1,2,3,4,3,2,1]) === 3); // true
+// console.log(findEvenIndex([1,100,50,-51,1,1]) === 1); // true
+// console.log(findEvenIndex([1,2,3,4,5,6]) === -1); // true
+// console.log(findEvenIndex([20,10,30,10,10,15,35]) === 3); // true
+// console.log(findEvenIndex([20,10,-80,10,10,15,35]) === 0); // true
+// console.log(findEvenIndex([10,-80,10,10,15,35,20]) === 6); // true
+// console.log(findEvenIndex([-1,-2,-3,-4,-3,-2,-1]) === 3); // true
 
 // eslint-disable-next-line max-lines-per-function
 function findEvenIndex(arr) {
@@ -50,10 +50,13 @@ function findEvenIndex(arr) {
     // console.log('\n');
 
     if (leftSum === rightSum) {
-      return i;
-    }
+      return i;    }
   }
   return middleIndex;
 }
 
 findEvenIndex([1,2,3,4,3,2,1]);
+
+// String.prototype.toJadenCase = function () {
+//   return this.split(' ').map(word => word.charAt().toUpperCase() + word.slice(1)).join(' ');
+// };
