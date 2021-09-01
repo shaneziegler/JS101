@@ -15,3 +15,4 @@ buyFruit([['apple', 3], ['orange', 1], ['banana', 2]]);
 function buyFruit(arr) {
   return arr.map((subArr) => [...Array(subArr[1])].map(value => subArr[0])).flat();
 }
+
