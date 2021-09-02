@@ -46,3 +46,12 @@ function rotateArray(array) {
 
   return array.slice(1).concat(array[0]);
 }
+
+// redo using slice
+
+function rotateArray(arr) {
+  if (!Array.isArray(arr)) return undefined;
+  if (arr.length === 0) return [];
+
+  return arr.slice(1).concat(arr.slice(0,1));
+}
