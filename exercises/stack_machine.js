@@ -16,105 +16,82 @@
 // PRINT : Print the register value.
 // All operations are integer operations (which is only important with DIV and REMAINDER).
 
-// minilang('PRINT');
-// // 0
+minilang('PRINT');
+// 0
 
-// minilang('5 PUSH 3 MULT PRINT');
-// // 15
+minilang('5 PUSH 3 MULT PRINT');
+// 15
 
-// minilang('5 PRINT PUSH 3 PRINT ADD PRINT');
-// // 5
-// // 3
-// // 8
+minilang('5 PRINT PUSH 3 PRINT ADD PRINT');
+// 5
+// 3
+// 8
 
-// minilang('5 PUSH POP PRINT');
-// // 5
+minilang('5 PUSH POP PRINT');
+// 5
 
-// minilang('3 PUSH 4 PUSH 5 PUSH PRINT ADD PRINT POP PRINT ADD PRINT');
-// // 5
-// // 10
-// // 4
-// // 7
+minilang('3 PUSH 4 PUSH 5 PUSH PRINT ADD PRINT POP PRINT ADD PRINT');
+// 5
+// 10
+// 4
+// 7
 
-// minilang('3 PUSH PUSH 7 DIV MULT PRINT');
-// // 6
+minilang('3 PUSH PUSH 7 DIV MULT PRINT');
+// 6
 
-// minilang('4 PUSH PUSH 7 REMAINDER MULT PRINT');
-// // 12
+minilang('4 PUSH PUSH 7 REMAINDER MULT PRINT');
+// 12
 
-// minilang('-3 PUSH 5 SUB PRINT');
-// // 8
+minilang('-3 PUSH 5 SUB PRINT');
+// 8
 
-// minilang('6 PUSH');
-// // (nothing is printed because the `program` argument has no `PRINT` commands)
+minilang('6 PUSH');
+// (nothing is printed because the `program` argument has no `PRINT` commands)
 
 function minilang(commandList) {
   const cpu = {
     stack : [],
     register : 0,
-    push : function (num) {
-      cpu.stack.push(num);
+    PUSH : function () {
+      cpu.stack.push(cpu.register);
     },
-    pop : function () {
-      return cpu.stack.pop();
+    POP : function () {
+      cpu.register = cpu.stack.pop();
     },
     setRegister : function (num) {
       cpu.register = num;
     },
-    add : function () {
-      cpu.register += cpu.pop();
+    ADD : function () {
+      cpu.register += cpu.stack.pop();
     },
-    sub : function () {
-      cpu.register -= cpu.pop();
+    SUB : function () {
+      cpu.register -= cpu.stack.pop();
     },
-    mult : function () {
-      cpu.register *= cpu.pop();
+    MULT : function () {
+      cpu.register *= cpu.stack.pop();
     },
-    div : function () {
-      cpu.register = Math.floor(cpu.register / cpu.pop());
+    DIV : function () {
+      cpu.register = Math.floor(cpu.register / cpu.stack.pop());
     },
-    remainder : function () {
-      cpu.register %= cpu.pop();
+    REMAINDER : function () {
+      cpu.register %= cpu.stack.pop();
     },
-    print : function () {
+    PRINT : function () {
       console.log(cpu.register);
     }
   };
 
   function isNumber(value) {
-    return parseInt(value) === Number(value);
+    return !isNaN(value);
   }
-  debugger;
+
   let parsedCommandList = commandList.split(' ');
-  parsedCommandList.forEach(op => {
-    debugger;
-    if (isNumber(op)) {
-      debugger;
-      console.log('is number');
-      cpu.setRegister(Number(op));
+  parsedCommandList.forEach(token => {
+    if (isNumber(token)) {
+      cpu.setRegister(Number(token));
     } else {
-      let command = op.toLowerCase();
-      cpu[command] ();
-      // cpu['print']();
+      cpu[token] ();
     }
   });
 }
 
-// minilang('-3 PUSH 5 SUB PRINT');
-
-// const obj = {
-//   firstName: 'John',
-//   lastName: 'Smith',
-//   combine: function () {
-//     console.log('xxx');
-//     return obj.firstName + ' ' + obj.lastName;
-//   }
-// };
-
-// let prop = 'firstName';
-// obj[prop];
-
-// prop = 'combine';
-// obj[prop;
-
-minilang('-3 PUSH 5 SUB PRINT');
