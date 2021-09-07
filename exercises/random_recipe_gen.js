@@ -37,7 +37,7 @@ let firstNoun  = ['Power', 'After Work', 'Holiday', 'Disco', 'Late Night'];
 let secondNoun = ['Mix', 'Delight', 'Bowl', 'Chunk', 'Surprise', 'Bliss'];
 
 // Generate!
-
+//! try fixing a different way and keeping the .joins in the console log
 let dishName = random(adjective) + ' ' + random(firstNoun) + ' '  + random(secondNoun);
 let dish = random(ingredients, 3) + ',' + random(spices, 2) + ',' + random(extras, 1);
 
