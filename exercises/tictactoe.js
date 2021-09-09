@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 /* eslint-disable no-lonely-if */
 /* eslint-disable max-lines-per-function */
 // JS101
@@ -7,10 +8,14 @@
 const INITIAL_MARKER = ' ';
 const HUMAN_MARKER = 'X';
 const COMPUTER_MARKER = 'O';
+const MAX_WINS = 5;
+
+function displayScoresAndRound(scores) {
+  console.log(`Round: ${scores.round}`);
+  console.log(`Player ${scores.human}  Computer ${scores.computer}`);
+}
 
 function displayBoard(board) {
-  console.clear();
-
   console.log(`You are ${HUMAN_MARKER}. Computer is ${COMPUTER_MARKER}`);
 
   console.log('');
@@ -48,7 +53,7 @@ function playerChoosesSquare(board) {
   let square;
 
   while (true) {
-    prompt(`Choose a square ${emptySquares(board).join(', ')}:`);
+    prompt(`Choose a square: ${joinOr(emptySquares(board))}`);
     square = readline.question().trim();
     if (emptySquares(board).includes(square)) break;
 
@@ -57,12 +62,44 @@ function playerChoosesSquare(board) {
   board[square] = HUMAN_MARKER;
 }
 
-function computerChoosesSquare(board) {
-  debugger;
+function computerChoosesRandomSquare(board) {
   let randomIndex = Math.floor(Math.random() * emptySquares(board).length);
 
   let square = emptySquares(board)[randomIndex];
   board[square] = COMPUTER_MARKER;
+}
+
+function checkImmediateThreat(board) {
+  let winningLines = [
+    [1, 2, 3], [4, 5, 6], [7, 8, 9], // rows
+    [1, 4, 7], [2, 5, 8], [3, 6, 9], // columns
+    [1, 5, 9], [3, 5, 7]             // diagonals
+  ];
+
+  for (let line = 0; line < winningLines.length; line++) {
+    let [ sq1, sq2, sq3 ] = winningLines[line];
+    let humanSpots = 0;
+    let emptySpots = 0;
+
+    if (board[sq1] === HUMAN_MARKER) humanSpots += 1;
+    if (board[sq2] === HUMAN_MARKER) humanSpots += 1;
+    if (board[sq3] === HUMAN_MARKER) humanSpots += 1;
+    if (board[sq1] === INITIAL_MARKER) emptySpots += 1;
+    if (board[sq2] === INITIAL_MARKER) emptySpots += 1;
+    if (board[sq3] === INITIAL_MARKER) emptySpots += 1;
+    console.log(`human ${humanSpots}  empty ${emptySpots}`);
+    if (humanSpots === 2 && emptySpots === 1) {
+      console.log('IMMEDIATE THREAT');
+      readline.question('...');
+      return true;
+    }
+  }
+  return false;
+}
+
+
+function computerBlockThreat(board) {
+
 }
 
 function boardFull(board) {
@@ -105,23 +142,29 @@ function detectWinner(board) {
 
 let readline = require('readline-sync');
 
-while (true) {
+let scores = initScores();
+
+while (scores.human < MAX_WINS && scores.computer < MAX_WINS) {
   let board = initializeBoard();
 
   while (true) {
+    // console.clear();
+    displayScoresAndRound(scores);
     displayBoard(board);
 
     playerChoosesSquare(board);
     if (someoneWon(board) || boardFull(board)) break;
 
-    computerChoosesSquare(board);
+    checkImmediateThreat(board);
+    computerChoosesRandomSquare(board);
     if (someoneWon(board) || boardFull(board)) break;
   }
 
-  displayBoard(board);
+  // displayBoard(board);
 
   if (someoneWon(board)) {
     prompt(`${detectWinner(board)} won!`);
+    updateScores(scores, board);
   } else {
     prompt("It's a tie!");
   }
@@ -134,13 +177,37 @@ while (true) {
 prompt('Thanks for playing Tic Tac Toe!');
 
 
+
 function joinOr(arr, delimiter = ', ', conjunction = 'or') {
   switch (arr.length) {
     case 0: return "";
     case 1: return String(arr[0]);
     case 2: return arr.join(` ${conjunction} `);
     default: {
-      return `${arr.slice(0, arr.length - 1).join(delimiter)}, ${conjunction} ${arr[arr.length - 1]}`; 
+      return `${arr.slice(0, arr.length - 1).join(delimiter)}, ${conjunction} ${arr[arr.length - 1]}`;
     }
+  }
+}
+
+function resetScores(scores) {
+  scores.human = 0;
+  scores.computer = 0;
+}
+
+function initScores() {
+  return {
+    human: 0,
+    computer: 0,
+    round: 1
+  };
+}
+
+function updateScores(scores, board) {
+  if (detectWinner(board) === 'Player') {
+    scores.human += 1;
+    scores.round += 1;
+  } else if (detectWinner(board) === 'Computer') {
+    scores.computer += 1;
+    scores.round += 1;
   }
 }
