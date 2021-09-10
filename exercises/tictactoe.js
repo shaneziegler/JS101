@@ -9,6 +9,12 @@ const INITIAL_MARKER = ' ';
 const HUMAN_MARKER = 'X';
 const COMPUTER_MARKER = 'O';
 const MAX_WINS = 5;
+const WINNINGLINES = [
+  [1, 2, 3], [4, 5, 6], [7, 8, 9], // rows
+  [1, 4, 7], [2, 5, 8], [3, 6, 9], // columns
+  [1, 5, 9], [3, 5, 7]             // diagonals
+];
+
 
 function displayScoresAndRound(scores) {
   console.log(`Round: ${scores.round}`);
@@ -69,37 +75,59 @@ function computerChoosesRandomSquare(board) {
   board[square] = COMPUTER_MARKER;
 }
 
-function checkImmediateThreat(board) {
-  let winningLines = [
-    [1, 2, 3], [4, 5, 6], [7, 8, 9], // rows
-    [1, 4, 7], [2, 5, 8], [3, 6, 9], // columns
-    [1, 5, 9], [3, 5, 7]             // diagonals
-  ];
-
-  for (let line = 0; line < winningLines.length; line++) {
-    let [ sq1, sq2, sq3 ] = winningLines[line];
-    let humanSpots = 0;
-    let emptySpots = 0;
-
-    if (board[sq1] === HUMAN_MARKER) humanSpots += 1;
-    if (board[sq2] === HUMAN_MARKER) humanSpots += 1;
-    if (board[sq3] === HUMAN_MARKER) humanSpots += 1;
-    if (board[sq1] === INITIAL_MARKER) emptySpots += 1;
-    if (board[sq2] === INITIAL_MARKER) emptySpots += 1;
-    if (board[sq3] === INITIAL_MARKER) emptySpots += 1;
-    console.log(`human ${humanSpots}  empty ${emptySpots}`);
-    if (humanSpots === 2 && emptySpots === 1) {
-      console.log('IMMEDIATE THREAT');
-      readline.question('...');
-      return true;
+function computerChoosesSquare(board) {
+  let possibleWin = findOffensiveMove(board);
+  if (possibleWin) {
+    board[possibleWin] = COMPUTER_MARKER;
+  } else {
+    if (findImmediateThreat(board)) {
+      board[findImmediateThreat(board)] = COMPUTER_MARKER;
+    } else {
+      computerChoosesRandomSquare(board);
     }
   }
-  return false;
 }
 
+function findImmediateThreat(board) {
 
-function computerBlockThreat(board) {
 
+  for (let line = 0; line < WINNINGLINES.length; line++) {
+    let [ sq1, sq2, sq3 ] = WINNINGLINES[line];
+    let numHumanSpots = 0;
+    let numEmptySpots = 0;
+
+    if (board[sq1] === HUMAN_MARKER) numHumanSpots += 1;
+    if (board[sq2] === HUMAN_MARKER) numHumanSpots += 1;
+    if (board[sq3] === HUMAN_MARKER) numHumanSpots += 1;
+    if (board[sq1] === INITIAL_MARKER) numEmptySpots += 1;
+    if (board[sq2] === INITIAL_MARKER) numEmptySpots += 1;
+    if (board[sq3] === INITIAL_MARKER) numEmptySpots += 1;
+
+    if (numHumanSpots === 2 && numEmptySpots === 1) {
+      return WINNINGLINES[line].find(sq => board[sq] === INITIAL_MARKER);
+    }
+  }
+  return null;
+}
+
+function findOffensiveMove(board) {
+  for (let line = 0; line < WINNINGLINES.length; line++) {
+    let [ sq1, sq2, sq3 ] = WINNINGLINES[line];
+    let numComputerSpots = 0;
+    let numEmptySpots = 0;
+
+    if (board[sq1] === HUMAN_MARKER) numComputerSpots += 1;
+    if (board[sq2] === HUMAN_MARKER) numComputerSpots += 1;
+    if (board[sq3] === HUMAN_MARKER) numComputerSpots += 1;
+    if (board[sq1] === INITIAL_MARKER) numEmptySpots += 1;
+    if (board[sq2] === INITIAL_MARKER) numEmptySpots += 1;
+    if (board[sq3] === INITIAL_MARKER) numEmptySpots += 1;
+
+    if (numComputerSpots === 2 && numEmptySpots === 1) {
+      return WINNINGLINES[line].find(sq => board[sq] === INITIAL_MARKER);
+    }
+  }
+  return null;
 }
 
 function boardFull(board) {
@@ -148,19 +176,16 @@ while (scores.human < MAX_WINS && scores.computer < MAX_WINS) {
   let board = initializeBoard();
 
   while (true) {
-    // console.clear();
     displayScoresAndRound(scores);
     displayBoard(board);
 
     playerChoosesSquare(board);
     if (someoneWon(board) || boardFull(board)) break;
 
-    checkImmediateThreat(board);
-    computerChoosesRandomSquare(board);
+    computerChoosesSquare(board);
+
     if (someoneWon(board) || boardFull(board)) break;
   }
-
-  // displayBoard(board);
 
   if (someoneWon(board)) {
     prompt(`${detectWinner(board)} won!`);
