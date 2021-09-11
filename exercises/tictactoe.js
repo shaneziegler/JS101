@@ -236,3 +236,20 @@ function updateScores(scores, board) {
     scores.round += 1;
   }
 }
+
+// let arr = [1,2];
+
+// function test(board) {
+//   if ((possibleWin = test2(board))) {
+//     console.log('in possible win');
+//     board[possibleWin] = 'O';
+//     console.log(possibleWin);
+//   } else {
+//     console.log('else');
+//     console.log(possibleWin);
+//   }
+// }
+
+// function test2(x) {
+//   return 5;
+// }
