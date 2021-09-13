@@ -1,0 +1,99 @@
+// sept 11 2021
+// study session with edris
+
+let produce = {
+  apple: 'Fruit',
+  carrot: 'Vegetable',
+  pear: 'Fruit',
+  broccoli: 'Vegetable'
+};
+
+let produceKeyValues = Object.entries(produce);
+// produceKeyValues contains:
+//   [['apple', 'Fruit'],
+//    ['carrot', 'Vegetable'],
+//    ['pear', 'Fruit'],
+//    ['broccoli', 'Vegetable']]
+
+produceKeyValues.forEach(keyValue => {
+  let [ key, value ] = keyValue;
+
+  console.log(`${key} is a ${value}`);
+});
+// logs:
+// apple is a Fruit
+// carrot is a Vegetable
+// pear is a Fruit
+// broccoli is a Vegetable
+
+/*
+- Edris
+
+Above, the produce object is declared and properties defined. The `produceKeyValues` variable is expressed as the entries of the `produce` object. The Object.entries method returns the entire object, but as an array of nested arrays that contain each key, value pair. Then after this declaration, the `forEach` method is called upon the variable. Within the callback of the forEach method, there is a literal object that store each element of the array as a literal key,value array. This is then used to log to the console using a template literal format for the key and value seperately.
+*/
+
+/*
+The variable produce is assigned to an object. The array `produceKeyValues` is created by calling the Object.entries method on the `produce` object, which creates an nested array of the key/value pairs. The `forEach method` is called on the `produceKeyValues` array, which returns `undefined`. Each key/value is assigned to the variables key and value using array deconstruction. `console.log` displays each key/value using a template literal in the format "KEY is a VALUE"
+*/
+
+
+
+// Pass by Reference vs. Pass by Value
+1 let foo = {
+2   a: 'hello',
+3   b: 'world',
+4  };
+5 
+6 let qux = 'hello';
+7 
+8 function bar(argument1, argument2) {
+9   argument1.a = 'hi';
+10  argument2 = 'hi';
+11 }
+12
+13 bar(foo, qux);
+14 
+15 console.log(foo.a);
+16 console.log(qux);
+
+
+
+/* Launch School Answer
+The program logs 'hi' and 'hello' The reason behind this is that objects are mutable; strings and other primitives are not. Also, variable reassignment, such as that on line 10, doesn't mutate the original object even when the object is mutable. Thus, line 9 mutates the foo object by assigning its a property to a new value ('hi'). Therefore, the code on line 15 logs hi. On the other hand, line 10 reassigns the argument2 variable, but it doesn't mutate the string represented by qux. Thus, line 16 logs hello: the original value of the qux variable. */
+
+
+
+
+let arr = [['a'], ['b'], ['c']];
+let copyOfArr = arr.slice();
+
+copyOfArr[1].push('d');
+
+arr;       // => [ [ 'a' ], [ 'b', 'd' ], [ 'c' ] ]
+copyOfArr; // => [ [ 'a' ], [ 'b', 'd' ], [ 'c' ] ]
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+let arr = [{ a: 'foo' }, { b: 'bar' }, { c: 'baz' }];
+let copyOfArr = [...arr];
+
+copyOfArr[1].d = 'qux';
+
+arr;       // => [ { a: 'foo' }, { b: 'bar', d: 'qux' }, { c: 'baz' } ]
+copyOfArr; // => [ { a: 'foo' }, { b: 'bar', d: 'qux' }, { c: 'baz' } ]
+
+/*
+- Edris
+
+the variable `arr` is declared, and is a pointer to the `Array` object, that contains nested objects within the array. Below `arr` there is another variable declared called `copyOfArr`, which is as it sounds, a pointer that points to a new array that uses `spread syntax` that enters the contents of the `iterable` called upon, which in this case is - a shallow copy of - the `arr` variable above. Below these variable declarations, `copyOfArr`'s contents are accessed using array element referencing to refer to the element at index `1` of the array, which is the 2nd nested object within the array. This reference is then chained with the dot notation of the `d` key, which doesn't exist in the object, and so is created and assigned the string value `qux`. both variable are then called and values compared. By mutating - copyofarr, the original is also mutated since the nested objects are shared - 
+*/
+
+
+
+/*
+-Shane
+
+The variable arr is assigned an array of objects. The `copyOfArr` variable is declared and assigned to a shallow copy of the arr array using spread syntax. `copyofArr` is mutated by adding a key/value pair of 'd' - the key and qux - the value added to the second element [1] of copyOfArr, which also effects the `arr` array's object, since both point to the same objects.
+*/
