@@ -18,27 +18,18 @@
 letterPercentages('123');
 // { lowercase: "0.00", uppercase: "0.00", neither: "100.00" }
 
+// could combine all into one return of the object
 function letterPercentages(str) {
   let count = {
-    uppercase: 0,
-    lowercase: 0,
-    neither: 0
+    uppercase: str.match(/[A-Z]/g) ? str.match(/[A-Z]/g).length : 0,
+    lowercase: str.match(/[a-z]/g) ? str.match(/[a-z]/g).length : 0,
+    neither: str.match(/[^a-z]/gi) ? str.match(/[^a-z]/gi).length : 0,
   };
 
-  let ratio = {
-    uppercase: 0,
-    lowercase: 0,
-    neither: 0
+  return {
+    lowercase: (100 * (count.lowercase / str.length)).toFixed(2),
+    uppercase: (100 * (count.uppercase / str.length)).toFixed(2),
+    neither: (100 * (count.neither / str.length)).toFixed(2)
   };
-
-  count.uppercase = str.match(/[A-Z]/g) ? str.match(/[A-Z]/g).length : 0;
-  count.lowercase = str.match(/[a-z]/g) ? str.match(/[a-z]/g).length : 0;
-  count.neither = str.length - count.lowercase - count.uppercase;
-
-  ratio.lowercase = (100 * (count.lowercase / str.length)).toFixed(2);
-  ratio.uppercase = (100 * (count.uppercase / str.length)).toFixed(2);
-  ratio.neither = (100 * (count.neither / str.length)).toFixed(2);
-
-  return ratio;
 }
 
