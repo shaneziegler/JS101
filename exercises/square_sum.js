@@ -23,3 +23,31 @@ function squareSum(num) {
   if (num === 1) return 1;
   return (num ** 2) + squareSum(num - 1);
 }
+
+
+//student solution using reduce and map
+function sumSquareDifference(num) {
+
+  let squareOfSum = [...Array(num)].map((_, index) => index + 1)
+    .reduce((acc, num) => acc + num, 0) ** 2;
+
+  let sumOfSquares = [...Array(num)].map((_, index) => index + 1)
+    .map(num => num ** 2).reduce((acc, num) => acc + num, 0);
+
+  return squareOfSum - sumOfSquares;
+}
+
+
+// another one - check out how the array was created
+function sumSquareDifference(num){
+  let array = Array.from({length: num}, (_, i) => i + 1)
+  return sqSum(array) - sumSq(array)
+}
+
+function sumSq(array){
+ return array.reduce((acc, curVal) => acc + curVal**2, 0) 
+}
+
+function sqSum(array){
+  return array.reduce((acc, curVal) => acc + curVal, 0)**2
+}
