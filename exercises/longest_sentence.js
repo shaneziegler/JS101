@@ -58,26 +58,27 @@ longestSentence("To be or not to be! Is that the question?");
 // The longest sentence has 6 words.
 
 function longestSentence(str) {
-  let savePunc = {};
-  let arr = str.split('');
+  let sentencesArr = findSentences(str);
+  let sentenceLengths = sentencesArr.map(str => str.length);
 
-  for (let idx = 0; idx < str.length; idx++) {
-    if (arr[idx] === '?') {
-      savePunc[idx] = '?';
-      arr[idx] = '.';
-    }
-    if (arr[idx] === '!') {
-      savePunc[idx] = '!';
-      arr[idx] = '.';
+  // reduce((previousValue, currentValue, currentIndex, array) => { ... }, initialValue)
+  let maxIndex = sentenceLengths.reduce((maxSoFar, currSenLen, curridx, sentenceLengths) => 
+    currSenLen > sentenceLengths[maxSoFar].length ? currentIndex : maxSoFar, 0);
+
+  console.log(sentenceLengths);
+  console.log(maxIndex);
+  console.log(sentencesArr[maxIndex]);
+}
+
+function findSentences(str) {
+  let sentencesArray = [];
+  let sentenceStart = 0;
+
+  for (let idx = 10; idx < str.length; idx++) {
+    if (['.','?','!'].includes(str[idx])) {
+      sentencesArray.push(str.slice(sentenceStart, idx + 1).trim());
+      sentenceStart = idx + 1;
     }
   }
-  let newStr = arr.join('');
-  let newArr = newStr.split('.');
-  let arrLengths = newArr.map(arr => arr.trim().length);
-
-  console.log(newStr);
-  console.log(savePunc);
-  console.log(newArr);
-  console.log(arrLengths);
-  return newStr;
+  return sentencesArray;
 }
