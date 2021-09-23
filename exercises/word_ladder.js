@@ -18,6 +18,12 @@ let ladder = ''
   }
 
   ladder += word
-})
+});
 
-console.log(ladder)  // expect: head-heal-teal-tell-tall-tail
+console.log(ladder) // expect: head-heal-teal-tell-tall-tail
+
+
+// error is caused by missing semi-colon after "let ladder = '' "
+
+//! Semicolons should always terminate a statement. With no semicolon to separate them, 
+//! JavaScript sometimes sees the next statement as part of the former statement, which leads to undesired behavior.
