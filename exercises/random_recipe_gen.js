@@ -1,3 +1,7 @@
+// JS101
+// Debugging JS
+// Random Recipse Generator
+
 // Picks n random elements from an array,
 // and returns a new array with those elements.
 function random(array, n) {
@@ -38,12 +42,19 @@ let secondNoun = ['Mix', 'Delight', 'Bowl', 'Chunk', 'Surprise', 'Bliss'];
 
 // Generate!
 //! try fixing a different way and keeping the .joins in the console log
-let dishName = random(adjective) + ' ' + random(firstNoun) + ' '  + random(secondNoun);
-let dish = random(ingredients, 3) + ',' + random(spices, 2) + ',' + random(extras, 1);
+// let dishName = random(adjective) + ' ' + random(firstNoun) + ' '  + random(secondNoun);
+// let dish = random(ingredients, 3) + ',' + random(spices, 2) + ',' + random(extras, 1);
 
-// console.log('How about: ' + dishName.join(' '));
-// console.log('You need: ' + dish.join(', '));
+let dishName = [].concat(random(adjective), random(firstNoun), random(secondNoun));
+let dish = [].concat(random(ingredients, 3), random(spices, 2), random(extras, 1));
+
+// console.log(dishName);
+// console.log(dish);
 
 
-console.log('How about: ' + dishName);
-console.log('You need: ' + dish);
+console.log('How about: ' + dishName.join(' '));
+console.log('You need: ' + dish.join(', '));
+
+
+// console.log('How about: ' + dishName);
+// console.log('You need: ' + dish);
