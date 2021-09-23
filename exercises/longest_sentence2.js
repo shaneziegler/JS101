@@ -61,9 +61,12 @@ function longestSentence(str) {
   let sentencesArr = findSentences(str);
   let sentenceLengths = sentencesArr.map(str => str.length);
 
-  let maxIndex = sentenceLengths.reduce((maxIdxSoFar, currSenLen, currIdx, sentenceLengths) => {
-    return currSenLen > sentenceLengths[maxIdxSoFar] ? currIdx : maxIdxSoFar;
-  }, 0);
+  // let maxIndex = sentenceLengths.reduce((maxIdxSoFar, currSenLen, currIdx, sentenceLengths) => {
+  //   return currSenLen > sentenceLengths[maxIdxSoFar] ? currIdx : maxIdxSoFar;
+  // }, 0);
+
+  let max = sentenceLengths.reduce((a, b) => Math.max(a,b));
+  let maxIndex = sentenceLengths.indexOf(max);
 
   console.log(sentencesArr[maxIndex]);
   console.log(`\nThe longest sentence has ${sentencesArr[maxIndex].split(' ').length} words.`);

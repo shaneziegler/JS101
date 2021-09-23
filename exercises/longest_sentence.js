@@ -66,7 +66,7 @@ function longestSentence(str) {
   }, 0);
 
   console.log(sentencesArr[maxIndex]);
-  console.log(`\nThe longest sentence has ${sentencesArr[maxIndex].split(' ').length} words.`);
+  console.log(`\nThe longest sentence has ${sentencesArr[maxIndex].split(' ').length} words.\n`);
 }
 
 function findSentences(str) {
