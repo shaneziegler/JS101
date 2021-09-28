@@ -13,8 +13,20 @@ const text = 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem acc
 
 searchWord('sed', text);      // 3
 
-//! will have problems with puncutation next to words
-function searchWord(word, str) {
-  return str.split(' ').filter(arrWord => arrWord.toLowerCase() === word.toLowerCase()).length;
-}
+// in - 2 strings
+//    - the word to look for in as a string
+//    - the string to seach
+// out - an integer
+//     - count of how many times that word appears in the text
 
+
+
+//! will have problems with puncutation next to words
+// function searchWord(word, str) {
+//   return str.split(' ').filter(arrWord => arrWord.toLowerCase() === word.toLowerCase()).length;
+// }
+
+function searchWord(word, str) {
+  let regex = new RegExp(word, 'gi');
+  return (str.match(regex) || []).length;
+}
