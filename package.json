@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "fraction.js": "github:infusion/Fraction.js",
     "readline-sync": "^1.4.10"
   },
   "devDependencies": {
