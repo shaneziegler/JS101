@@ -52,6 +52,11 @@ function initializeBoard() {
   for (let square = 1; square <= 9; square++) {
     board[String(square)] = INITIAL_MARKER;
   }
+  board['2'] = HUMAN_MARKER;
+  board['6'] = HUMAN_MARKER;
+  board['9'] = HUMAN_MARKER;
+  board['7'] = COMPUTER_MARKER;
+  board['8'] = COMPUTER_MARKER;
   return board;
 }
 
@@ -269,3 +274,50 @@ while (scores.human < MAX_WINS && scores.computer < MAX_WINS) {
 }
 
 prompt('Thanks for playing Tic Tac Toe!');
+
+function minimax(node, depth, maximizingPlayer) {
+  debugger;
+  if (someoneWon(board) || boardFull(board)) {
+    return minimaxMoveScore(board, depth, maximizingPlayer);
+  }
+
+  depth += 1;
+  let scores = [];
+  let moves = [];
+  let movesRemaining = [];
+
+  // if (depth === 0 || node is a terminal node) {
+  //       return the heuristic value of node
+  //   }
+
+  for (let spot in board) {
+    if (board[spot] === INITIAL_MARKER) {
+      movesRemaining.push(spot);
+    }
+  }
+
+  if (maximizingPlayer) {
+    let value = Number.NEGATIVE_INFINITY;
+    for each child of node do
+      value = Math.max(value, minimax(child, depth − 1, false));
+    return value;
+  } else { // (* minimizing player *)
+    let value = Number.POSITIVE_INFINITY;
+    for each child of node do
+      value = Math.min(value, minimax(child, depth − 1, true));
+    return value;
+  }
+}
+
+function minimaxMoveScore(board, depth, maximizingPlayer) {
+  debugger;
+  if (someoneWon(board)) {
+    if (detectWinner(board) === 'Computer') {
+      return 10 - depth;
+    } else {
+      return depth - 10;
+    }
+  } else {
+    return 0;
+  }
+}
