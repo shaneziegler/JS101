@@ -297,7 +297,7 @@ function minimax(node, depth, maximizingPlayer) {
   }
 
   if (maximizingPlayer) {
-    let value = Number.NEGATIVE_INFINITY;
+    let value = Number.NEGATIVE_INFINITY; // 
     for each child of node do
       value = Math.max(value, minimax(child, depth − 1, false));
     return value;
