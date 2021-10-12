@@ -89,19 +89,22 @@ function computerChoosesRandomSquare(board) {
 }
 
 function computerChoosesSquare(board) {
-  let possibleWinSquare = findOffensiveMove(board);
-  if (possibleWinSquare) {
-    board[possibleWinSquare] = COMPUTER_MARKER;
-  } else {
-    let immediateThreatSquare = findImmediateThreat(board);
-    if (immediateThreatSquare) {
-      board[immediateThreatSquare] = COMPUTER_MARKER;
-    } else if (board[MIDDLE_SQUARE] === INITIAL_MARKER) {
-      board[MIDDLE_SQUARE] = COMPUTER_MARKER;
-    } else {
-      computerChoosesRandomSquare(board);
-    }
-  }
+  debugger;
+  let x = minimax(node, depth, maximizingPlayer);
+
+  // let possibleWinSquare = findOffensiveMove(board);
+  // if (possibleWinSquare) {
+  //   board[possibleWinSquare] = COMPUTER_MARKER;
+  // } else {
+  //   let immediateThreatSquare = findImmediateThreat(board);
+  //   if (immediateThreatSquare) {
+  //     board[immediateThreatSquare] = COMPUTER_MARKER;
+  //   } else if (board[MIDDLE_SQUARE] === INITIAL_MARKER) {
+  //     board[MIDDLE_SQUARE] = COMPUTER_MARKER;
+  //   } else {
+  //     computerChoosesRandomSquare(board);
+  //   }
+  // }
 }
 
 function findImmediateThreat(board) {
