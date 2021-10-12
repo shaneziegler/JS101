@@ -49,14 +49,19 @@ function displayBoard(board) {
 
 function initializeBoard() {
   let board = {};
+
   for (let square = 1; square <= 9; square++) {
     board[String(square)] = INITIAL_MARKER;
   }
-  board['2'] = HUMAN_MARKER;
-  board['6'] = HUMAN_MARKER;
-  board['9'] = HUMAN_MARKER;
-  board['7'] = COMPUTER_MARKER;
-  board['8'] = COMPUTER_MARKER;
+  board['1'] = INITIAL_MARKER;
+  board['2'] = COMPUTER_MARKER;
+  board['3'] = COMPUTER_MARKER;
+  board['4'] = HUMAN_MARKER;
+  board['5'] = HUMAN_MARKER;
+  board['6'] = COMPUTER_MARKER;
+  board['7'] = HUMAN_MARKER;
+  board['8'] = INITIAL_MARKER;
+  board['9'] = INITIAL_MARKER;
   return board;
 }
 
@@ -90,7 +95,31 @@ function computerChoosesRandomSquare(board) {
 
 function computerChoosesSquare(board) {
   debugger;
-  let x = minimax(node, depth, maximizingPlayer);
+  // let boardCopy = Object.assign({}, board);
+
+  let movesRemaining = [];
+  let moves = [];
+  let scores = [];
+
+  for (let spot in board) {
+    if (board[spot] === INITIAL_MARKER) {
+      movesRemaining.push(spot);
+    }
+  }
+  debugger;
+  movesRemaining.forEach(emptySquare => {
+
+    let boardCopy = Object.assign({}, board);
+    boardCopy[emptySquare] = COMPUTER_MARKER;
+    let x = minimax(boardCopy, 0, true);
+
+    console.log(x);
+
+    scores.push(x);
+    moves.push(emptySquare);
+    debugger;
+  });
+
 
   // let possibleWinSquare = findOffensiveMove(board);
   // if (possibleWinSquare) {
@@ -105,6 +134,12 @@ function computerChoosesSquare(board) {
   //     computerChoosesRandomSquare(board);
   //   }
   // }
+  debugger;
+  console.log(scores);
+  console.log(moves);
+
+  let doMove = 
+  //! need to find highest score and use that move
 }
 
 function findImmediateThreat(board) {
@@ -278,20 +313,16 @@ while (scores.human < MAX_WINS && scores.computer < MAX_WINS) {
 
 prompt('Thanks for playing Tic Tac Toe!');
 
-function minimax(node, depth, maximizingPlayer) {
-  debugger;
+function minimax(board, depth, maximizingPlayer) {
   if (someoneWon(board) || boardFull(board)) {
-    return minimaxMoveScore(board, depth, maximizingPlayer);
+    let zzz = minimaxMoveScore(board, depth);
+    debugger;
+    return zzz;
   }
 
   depth += 1;
-  let scores = [];
-  let moves = [];
   let movesRemaining = [];
-
-  // if (depth === 0 || node is a terminal node) {
-  //       return the heuristic value of node
-  //   }
+  let workingScore;
 
   for (let spot in board) {
     if (board[spot] === INITIAL_MARKER) {
@@ -299,28 +330,42 @@ function minimax(node, depth, maximizingPlayer) {
     }
   }
 
-  if (maximizingPlayer) {
-    let value = Number.NEGATIVE_INFINITY; // 
-    for each child of node do
-      value = Math.max(value, minimax(child, depth − 1, false));
-    return value;
-  } else { // (* minimizing player *)
-    let value = Number.POSITIVE_INFINITY;
-    for each child of node do
-      value = Math.min(value, minimax(child, depth − 1, true));
-    return value;
-  }
+  debugger;
+  maximizingPlayer = !maximizingPlayer;
+  movesRemaining.forEach(emptySquare => {
+    let childBoard = Object.assign({}, board);
+    if (maximizingPlayer) {
+      let value = Number.NEGATIVE_INFINITY;
+      childBoard[emptySquare] = COMPUTER_MARKER;
+      let ascore = minimax(childBoard, depth, maximizingPlayer);
+      console.log(ascore);
+      debugger;
+      workingScore = Math.max(value, ascore);
+    } else {
+      let value = Number.POSITIVE_INFINITY;
+      childBoard[emptySquare] = HUMAN_MARKER;
+      let bscore = minimax(childBoard, depth, maximizingPlayer);
+      console.log(bscore);
+      debugger;
+      workingScore = Math.min(value, bscore);
+    }
+  });
+  debugger;
+  return finalValue;
 }
 
-function minimaxMoveScore(board, depth, maximizingPlayer) {
-  debugger;
+
+function minimaxMoveScore(board, depth) {
   if (someoneWon(board)) {
     if (detectWinner(board) === 'Computer') {
+      debugger;
       return 10 - depth;
     } else {
+      debugger;
       return depth - 10;
     }
   } else {
+    debugger;
     return 0;
   }
 }
