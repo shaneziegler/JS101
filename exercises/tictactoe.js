@@ -9,7 +9,7 @@ const INITIAL_MARKER = ' ';
 const HUMAN_MARKER = 'X';
 const COMPUTER_MARKER = 'O';
 const MIDDLE_SQUARE = 5;
-const MAX_WINS = 5;
+const MAX_WINS = 1;
 const WINNINGLINES = [
   [1, 2, 3], [4, 5, 6], [7, 8, 9], // rows
   [1, 4, 7], [2, 5, 8], [3, 6, 9], // columns
@@ -51,17 +51,16 @@ function initializeBoard() {
   let board = {};
 
   for (let square = 1; square <= 9; square++) {
-    board[String(square)] = INITIAL_MARKER;
-  }
-  board['1'] = INITIAL_MARKER;
-  board['2'] = COMPUTER_MARKER;
-  board['3'] = COMPUTER_MARKER;
-  board['4'] = HUMAN_MARKER;
+    board[String(square)] = INITIAL_MARKER;  }
+  board['1'] = HUMAN_MARKER;
+  board['2'] = INITIAL_MARKER;
+  board['3'] = INITIAL_MARKER;
+  board['4'] = INITIAL_MARKER;
   board['5'] = HUMAN_MARKER;
-  board['6'] = COMPUTER_MARKER;
-  board['7'] = HUMAN_MARKER;
+  board['6'] = INITIAL_MARKER;
+  board['7'] = COMPUTER_MARKER;
   board['8'] = INITIAL_MARKER;
-  board['9'] = INITIAL_MARKER;
+  board['9'] = COMPUTER_MARKER;
   return board;
 }
 
@@ -94,29 +93,28 @@ function computerChoosesRandomSquare(board) {
 }
 
 function computerChoosesSquare(board) {
-  debugger;
-  // let boardCopy = Object.assign({}, board);
-
-  let movesRemaining = [];
+  let possibleMovesRemaining = [];
   let moves = [];
   let scores = [];
+  let moveValues = {};
 
   for (let spot in board) {
     if (board[spot] === INITIAL_MARKER) {
-      movesRemaining.push(spot);
+      possibleMovesRemaining.push(spot);
     }
   }
-  debugger;
-  movesRemaining.forEach(emptySquare => {
 
+  debugger;
+
+  possibleMovesRemaining.forEach(emptySquare => {
     let boardCopy = Object.assign({}, board);
     boardCopy[emptySquare] = COMPUTER_MARKER;
-    let x = minimax(boardCopy, 0, true);
+    let minimaxSquareValue = minimax(boardCopy, 0, true);
+    moveValues[emptySquare] = minimaxSquareValue;
+    // console.log(x);
 
-    console.log(x);
-
-    scores.push(x);
-    moves.push(emptySquare);
+    // scores.push(x);
+    // moves.push(emptySquare);
     debugger;
   });
 
@@ -135,10 +133,19 @@ function computerChoosesSquare(board) {
   //   }
   // }
   debugger;
-  console.log(scores);
-  console.log(moves);
+  // console.log(scores);
+  // console.log(moves);
 
-  let doMove = 
+  let arr2 = Object.entries(moveValues);
+  let doMove = arr2.reduce((acc, elm) => {
+    // console.log('\nAcc: ' + acc + ' - Elm:' + elm + '  -  Idx:' +  idx);
+    if (elm[1] > acc) {
+      return elm[0];
+    } else {
+      return acc;
+    }
+  }, 0);
+  board[doMove] = COMPUTER_MARKER;
   //! need to find highest score and use that move
 }
 
@@ -351,7 +358,7 @@ function minimax(board, depth, maximizingPlayer) {
     }
   });
   debugger;
-  return finalValue;
+  return workingScore;
 }
 
 
