@@ -145,6 +145,15 @@ function computerChoosesSquare(board) {
       return acc;
     }
   }, 0);
+
+  let board2 = Object.assign({}, board);
+  for (let x in moveValues) {
+    board2[x] = moveValues[x];
+  }
+  displayBoard2(board2);
+  console.log('Move picked = ' + doMove);
+  console.log(moveValues);
+
   board[doMove] = COMPUTER_MARKER;
   //! need to find highest score and use that move
 }
@@ -279,7 +288,7 @@ while (scores.human < MAX_WINS && scores.computer < MAX_WINS) {
   let currentPlayer = FIRST_MOVE;
 
   while (true) {
-    console.clear();
+    // console.clear();
     displayScoresAndRound(scores);
     displayBoard(board);
 
@@ -288,7 +297,7 @@ while (scores.human < MAX_WINS && scores.computer < MAX_WINS) {
     currentPlayer = switchPlayer(currentPlayer);
   }
 
-  console.clear();
+  // console.clear();
   displayScoresAndRound(scores);
   displayBoard(board);
 
@@ -375,4 +384,20 @@ function minimaxMoveScore(board, depth) {
     debugger;
     return 0;
   }
+}
+
+function displayBoard2(board) {
+  console.log('');
+  console.log('     |     |');
+  console.log(`  ${board['1']}  |  ${board['2']}  |  ${board['3']}`);
+  console.log('     |     |');
+  console.log('-----+-----+-----');
+  console.log('     |     |');
+  console.log(`  ${board['4']}  |  ${board['5']}  |  ${board['6']}`);
+  console.log('     |     |');
+  console.log('-----+-----+-----');
+  console.log('     |     |');
+  console.log(`  ${board['7']}  |  ${board['8']}  |  ${board['9']}`);
+  console.log('     |     |');
+  console.log('');
 }
