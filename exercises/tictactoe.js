@@ -5,6 +5,8 @@
 // Lesson 6
 // Tic Tac Toe
 
+var globalMoves = [];
+
 const INITIAL_MARKER = ' ';
 const HUMAN_MARKER = 'X';
 const COMPUTER_MARKER = 'O';
@@ -52,15 +54,15 @@ function initializeBoard() {
 
   for (let square = 1; square <= 9; square++) {
     board[String(square)] = INITIAL_MARKER;  }
-  board['1'] = HUMAN_MARKER;
-  board['2'] = INITIAL_MARKER;
-  board['3'] = INITIAL_MARKER;
-  board['4'] = INITIAL_MARKER;
-  board['5'] = HUMAN_MARKER;
-  board['6'] = INITIAL_MARKER;
-  board['7'] = COMPUTER_MARKER;
-  board['8'] = INITIAL_MARKER;
-  board['9'] = COMPUTER_MARKER;
+  // board['1'] = HUMAN_MARKER;
+  // board['2'] = INITIAL_MARKER;
+  // board['3'] = INITIAL_MARKER;
+  // board['4'] = INITIAL_MARKER;
+  // board['5'] = HUMAN_MARKER;
+  // board['6'] = INITIAL_MARKER;
+  // board['7'] = COMPUTER_MARKER;
+  // board['8'] = INITIAL_MARKER;
+  // board['9'] = COMPUTER_MARKER;
   return board;
 }
 
@@ -111,6 +113,10 @@ function computerChoosesSquare(board) {
     boardCopy[emptySquare] = COMPUTER_MARKER;
     let minimaxSquareValue = minimax(boardCopy, 0, true);
     moveValues[emptySquare] = minimaxSquareValue;
+    console.log('-----Start------------- Move: ' + emptySquare + ' ---------------------');
+    console.log(globalMoves);
+    console.log('-------End------------- Move: ' + emptySquare + ' ---------------------');
+    globalMoves = [];
     // console.log(x);
 
     // scores.push(x);
@@ -139,22 +145,22 @@ function computerChoosesSquare(board) {
   let arr2 = Object.entries(moveValues);
   let doMove = arr2.reduce((acc, elm) => {
     // console.log('\nAcc: ' + acc + ' - Elm:' + elm + '  -  Idx:' +  idx);
-    if (elm[1] > acc) {
-      return elm[0];
-    } else {
+    if (acc[1] > elm[1]) {
       return acc;
+    } else {
+      return elm;
     }
-  }, 0);
+  }, Number.NEGATIVE_INFINITY);
 
   let board2 = Object.assign({}, board);
   for (let x in moveValues) {
     board2[x] = moveValues[x];
   }
   displayBoard2(board2);
-  console.log('Move picked = ' + doMove);
+  console.log('\n!!!!!!Move picked = ' + doMove);
   console.log(moveValues);
 
-  board[doMove] = COMPUTER_MARKER;
+  board[doMove[0]] = COMPUTER_MARKER;
   //! need to find highest score and use that move
 }
 
@@ -348,26 +354,53 @@ function minimax(board, depth, maximizingPlayer) {
 
   debugger;
   maximizingPlayer = !maximizingPlayer;
-  movesRemaining.forEach(emptySquare => {
+  // movesRemaining.forEach(emptySquare => {
+  for (let i = 0; i < movesRemaining.length; i++) {
+    let emptySquare = movesRemaining[i];
     let childBoard = Object.assign({}, board);
     if (maximizingPlayer) {
       let value = Number.NEGATIVE_INFINITY;
       childBoard[emptySquare] = COMPUTER_MARKER;
       let ascore = minimax(childBoard, depth, maximizingPlayer);
-      console.log(ascore);
+      // console.log(ascore);
       debugger;
-      workingScore = Math.max(value, ascore);
+      value = Math.max(value, ascore);
+
+      let tempobj = {
+        move: emptySquare,
+        depth: depth,
+        score: ascore,
+        maximizingPlayer: maximizingPlayer,
+        value: value
+      };
+      globalMoves.push(tempobj);
+
+      return value;
+
     } else {
       let value = Number.POSITIVE_INFINITY;
       childBoard[emptySquare] = HUMAN_MARKER;
       let bscore = minimax(childBoard, depth, maximizingPlayer);
-      console.log(bscore);
+      // console.log(bscore);
       debugger;
-      workingScore = Math.min(value, bscore);
+      value = Math.min(value, bscore);
+
+      let tempobj = {
+        move: emptySquare,
+        depth: depth,
+        score: bscore,
+        maximizingPlayer: maximizingPlayer,
+        value: value
+      };
+      globalMoves.push(tempobj);
+
+      return value;
+
     }
-  });
+  }
   debugger;
-  return workingScore;
+  console.log('******************SHOULDNT GET HERE*****************');
+  // return workingScore;
 }
 
 
