@@ -12,6 +12,6 @@ let doMove = arr2.reduce((prev, curr) => {
   } else {
     return curr;
   }
-}, Number.NEGATIVE_INFINITY);  
+}, Number.NEGATIVE_INFINITY);
 
 console.log('picked:' + doMove);
