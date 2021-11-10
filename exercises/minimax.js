@@ -87,17 +87,9 @@ function playerChoosesSquare(board) {
   board[square] = HUMAN_MARKER;
 }
 
-function computerChoosesRandomSquare(board) {
-  let randomIndex = Math.floor(Math.random() * emptySquares(board).length);
-
-  let square = emptySquares(board)[randomIndex];
-  board[square] = COMPUTER_MARKER;
-}
 
 function computerChoosesSquare(board) {
   let possibleMovesRemaining = [];
-  let moves = [];
-  let scores = [];
   let moveValues = {};
 
   for (let spot in board) {
@@ -107,7 +99,6 @@ function computerChoosesSquare(board) {
   }
 
   debugger;
-
   possibleMovesRemaining.forEach(emptySquare => {
     let boardCopy = Object.assign({}, board);
     boardCopy[emptySquare] = COMPUTER_MARKER;
@@ -117,31 +108,10 @@ function computerChoosesSquare(board) {
     console.log(globalMoves);
     console.log('-------End------------- Move: ' + emptySquare + ' ---------------------');
     globalMoves = [];
-    // console.log(x);
-
-    // scores.push(x);
-    // moves.push(emptySquare);
     debugger;
   });
 
-
-  // let possibleWinSquare = findOffensiveMove(board);
-  // if (possibleWinSquare) {
-  //   board[possibleWinSquare] = COMPUTER_MARKER;
-  // } else {
-  //   let immediateThreatSquare = findImmediateThreat(board);
-  //   if (immediateThreatSquare) {
-  //     board[immediateThreatSquare] = COMPUTER_MARKER;
-  //   } else if (board[MIDDLE_SQUARE] === INITIAL_MARKER) {
-  //     board[MIDDLE_SQUARE] = COMPUTER_MARKER;
-  //   } else {
-  //     computerChoosesRandomSquare(board);
-  //   }
-  // }
   debugger;
-  // console.log(scores);
-  // console.log(moves);
-
   let arr2 = Object.entries(moveValues);
   let doMove = arr2.reduce((acc, elm) => {
     // console.log('\nAcc: ' + acc + ' - Elm:' + elm + '  -  Idx:' +  idx);
@@ -161,8 +131,97 @@ function computerChoosesSquare(board) {
   console.log(moveValues);
 
   board[doMove[0]] = COMPUTER_MARKER;
-  //! need to find highest score and use that move
 }
+
+function minimax(board, depth, maximizingPlayer) {
+  if (someoneWon(board) || boardFull(board)) {
+    let zzz = minimaxMoveScore(board, depth);
+    debugger;
+    return zzz;
+  }
+
+  depth += 1;
+  let movesRemaining = [];
+  let workingScore;
+
+  for (let spot in board) {
+    if (board[spot] === INITIAL_MARKER) {
+      movesRemaining.push(spot);
+    }
+  }
+
+  debugger;
+  maximizingPlayer = !maximizingPlayer;
+  // movesRemaining.forEach(emptySquare => {
+  for (let i = 0; i < movesRemaining.length; i++) {
+    let emptySquare = movesRemaining[i];
+    let childBoard = Object.assign({}, board);
+    if (maximizingPlayer) {
+      let value = Number.NEGATIVE_INFINITY;
+      childBoard[emptySquare] = COMPUTER_MARKER;
+      let ascore = minimax(childBoard, depth, maximizingPlayer);
+      // console.log(ascore);
+      debugger;
+      value = Math.max(value, ascore);
+
+      let tempobj = {
+        move: emptySquare,
+        depth: depth,
+        score: ascore,
+        maximizingPlayer: maximizingPlayer,
+        value: value
+      };
+      globalMoves.push(tempobj);
+
+      return value;
+
+    } else {
+      let value = Number.POSITIVE_INFINITY;
+      childBoard[emptySquare] = HUMAN_MARKER;
+      let bscore = minimax(childBoard, depth, maximizingPlayer);
+      // console.log(bscore);
+      debugger;
+      value = Math.min(value, bscore);
+
+      let tempobj = {
+        move: emptySquare,
+        depth: depth,
+        score: bscore,
+        maximizingPlayer: maximizingPlayer,
+        value: value
+      };
+      globalMoves.push(tempobj);
+
+      return value;
+
+    }
+  }
+  debugger;
+  console.log('******************SHOULDNT GET HERE*****************');
+  // return workingScore;
+}
+
+
+function minimaxMoveScore(board, depth) {
+  if (someoneWon(board)) {
+    if (detectWinner(board) === 'Computer') {
+      debugger;
+      return 10 - depth;
+    } else {
+      debugger;
+      return depth - 10;
+    }
+  } else {
+    debugger;
+    return 0;
+  }
+}
+
+
+
+
+
+
 
 function findImmediateThreat(board) {
 
@@ -334,90 +393,6 @@ while (scores.human < MAX_WINS && scores.computer < MAX_WINS) {
 }
 
 prompt('Thanks for playing Tic Tac Toe!');
-
-function minimax(board, depth, maximizingPlayer) {
-  if (someoneWon(board) || boardFull(board)) {
-    let zzz = minimaxMoveScore(board, depth);
-    debugger;
-    return zzz;
-  }
-
-  depth += 1;
-  let movesRemaining = [];
-  let workingScore;
-
-  for (let spot in board) {
-    if (board[spot] === INITIAL_MARKER) {
-      movesRemaining.push(spot);
-    }
-  }
-
-  debugger;
-  maximizingPlayer = !maximizingPlayer;
-  // movesRemaining.forEach(emptySquare => {
-  for (let i = 0; i < movesRemaining.length; i++) {
-    let emptySquare = movesRemaining[i];
-    let childBoard = Object.assign({}, board);
-    if (maximizingPlayer) {
-      let value = Number.NEGATIVE_INFINITY;
-      childBoard[emptySquare] = COMPUTER_MARKER;
-      let ascore = minimax(childBoard, depth, maximizingPlayer);
-      // console.log(ascore);
-      debugger;
-      value = Math.max(value, ascore);
-
-      let tempobj = {
-        move: emptySquare,
-        depth: depth,
-        score: ascore,
-        maximizingPlayer: maximizingPlayer,
-        value: value
-      };
-      globalMoves.push(tempobj);
-
-      return value;
-
-    } else {
-      let value = Number.POSITIVE_INFINITY;
-      childBoard[emptySquare] = HUMAN_MARKER;
-      let bscore = minimax(childBoard, depth, maximizingPlayer);
-      // console.log(bscore);
-      debugger;
-      value = Math.min(value, bscore);
-
-      let tempobj = {
-        move: emptySquare,
-        depth: depth,
-        score: bscore,
-        maximizingPlayer: maximizingPlayer,
-        value: value
-      };
-      globalMoves.push(tempobj);
-
-      return value;
-
-    }
-  }
-  debugger;
-  console.log('******************SHOULDNT GET HERE*****************');
-  // return workingScore;
-}
-
-
-function minimaxMoveScore(board, depth) {
-  if (someoneWon(board)) {
-    if (detectWinner(board) === 'Computer') {
-      debugger;
-      return 10 - depth;
-    } else {
-      debugger;
-      return depth - 10;
-    }
-  } else {
-    debugger;
-    return 0;
-  }
-}
 
 function displayBoard2(board) {
   console.log('');
