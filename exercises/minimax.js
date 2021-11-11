@@ -133,6 +133,14 @@ function computerChoosesSquare(board) {
   board[doMove[0]] = COMPUTER_MARKER;
 }
 
+function minimax2(board, depth) {
+  if (someoneWon(board) || boardFull(board)) {
+    return minimaxMoveScore(board, depth);
+  }
+
+  
+}
+
 function minimax(board, depth, maximizingPlayer) {
   if (someoneWon(board) || boardFull(board)) {
     let zzz = minimaxMoveScore(board, depth);
@@ -142,8 +150,6 @@ function minimax(board, depth, maximizingPlayer) {
 
   depth += 1;
   let movesRemaining = [];
-  let workingScore;
-
   for (let spot in board) {
     if (board[spot] === INITIAL_MARKER) {
       movesRemaining.push(spot);
@@ -152,12 +158,19 @@ function minimax(board, depth, maximizingPlayer) {
 
   debugger;
   maximizingPlayer = !maximizingPlayer;
-  // movesRemaining.forEach(emptySquare => {
+  let value;
+
+  if (maximizingPlayer) {
+    value = Number.NEGATIVE_INFINITY;
+  } else {
+    value = Number.POSITIVE_INFINITY;
+  }
+
   for (let i = 0; i < movesRemaining.length; i++) {
     let emptySquare = movesRemaining[i];
     let childBoard = Object.assign({}, board);
     if (maximizingPlayer) {
-      let value = Number.NEGATIVE_INFINITY;
+      // let value = Number.NEGATIVE_INFINITY;
       childBoard[emptySquare] = COMPUTER_MARKER;
       let ascore = minimax(childBoard, depth, maximizingPlayer);
       // console.log(ascore);
@@ -176,7 +189,7 @@ function minimax(board, depth, maximizingPlayer) {
       return value;
 
     } else {
-      let value = Number.POSITIVE_INFINITY;
+      // let value = Number.POSITIVE_INFINITY;
       childBoard[emptySquare] = HUMAN_MARKER;
       let bscore = minimax(childBoard, depth, maximizingPlayer);
       // console.log(bscore);
