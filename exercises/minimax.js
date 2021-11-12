@@ -138,7 +138,27 @@ function minimax2(board, depth) {
     return minimaxMoveScore(board, depth);
   }
 
+  depth += 1;
+  let scores = [];
+  let moves = [];
+
+  let movesRemaining = [];
+  for (let spot in board) {
+    if (board[spot] === INITIAL_MARKER) {
+      movesRemaining.push(spot);
+    }
+  }
+
+  movesRemaining.forEach(move => {
+    let possibleGame = Object.assign({}, board);
+    possibleGame[move] = COMPUTER_MARKER;
+    let tempscore = minimax2(possibleGame, depth);
+    scores.push(tempscore);
+    moves.push(move);
+  });
+
   
+
 }
 
 function minimax(board, depth, maximizingPlayer) {
