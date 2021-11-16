@@ -87,102 +87,10 @@ function playerChoosesSquare(board) {
   board[square] = HUMAN_MARKER;
 }
 
-function computerChoosesRandomSquare(board) {
-  let randomIndex = Math.floor(Math.random() * emptySquares(board).length);
-
-  let square = emptySquares(board)[randomIndex];
-  board[square] = COMPUTER_MARKER;
-}
-
 function computerChoosesSquare(board) {
-  let possibleMovesRemaining = [];
-  let moveValues = {};
-
-  for (let spot in board) {
-    if (board[spot] === INITIAL_MARKER) {
-      possibleMovesRemaining.push(spot);
-    }
-  }
-
-  debugger;
-
-  possibleMovesRemaining.forEach(emptySquare => {
-    let boardCopy = Object.assign({}, board);
-    boardCopy[emptySquare] = COMPUTER_MARKER;
-    let minimaxSquareValue = minimax(boardCopy, 0, true);
-    moveValues[emptySquare] = minimaxSquareValue;
-    console.log('-----Start------------- Move: ' + emptySquare + ' ---------------------');
-    console.log(globalMoves);
-    console.log('-------End------------- Move: ' + emptySquare + ' ---------------------');
-    globalMoves = [];
-    debugger;
-  });
-
-
-  debugger;
-
-  let arr2 = Object.entries(moveValues);
-  let doMove = arr2.reduce((acc, elm) => {
-    // console.log('\nAcc: ' + acc + ' - Elm:' + elm + '  -  Idx:' +  idx);
-    if (acc[1] > elm[1]) {
-      return acc;
-    } else {
-      return elm;
-    }
-  }, Number.NEGATIVE_INFINITY);
-
-  let board2 = Object.assign({}, board);
-  for (let x in moveValues) {
-    board2[x] = moveValues[x];
-  }
-  displayBoard2(board2);
-  console.log('\n!!!!!!Move picked = ' + doMove + '  ' + doMove[0]);
-  console.log(moveValues);
-
-  board[doMove[0]] = COMPUTER_MARKER;
-  //! need to find highest score and use that move
-}
-
-function findImmediateThreat(board) {
-
-
-  for (let line = 0; line < WINNINGLINES.length; line++) {
-    let [ sq1, sq2, sq3 ] = WINNINGLINES[line];
-    let numHumanSpots = 0;
-    let numEmptySpots = 0;
-
-    if (board[sq1] === HUMAN_MARKER) numHumanSpots += 1;
-    if (board[sq2] === HUMAN_MARKER) numHumanSpots += 1;
-    if (board[sq3] === HUMAN_MARKER) numHumanSpots += 1;
-    if (board[sq1] === INITIAL_MARKER) numEmptySpots += 1;
-    if (board[sq2] === INITIAL_MARKER) numEmptySpots += 1;
-    if (board[sq3] === INITIAL_MARKER) numEmptySpots += 1;
-
-    if (numHumanSpots === 2 && numEmptySpots === 1) {
-      return WINNINGLINES[line].find(sq => board[sq] === INITIAL_MARKER);
-    }
-  }
-  return null;
-}
-
-function findOffensiveMove(board) {
-  for (let line = 0; line < WINNINGLINES.length; line++) {
-    let [ sq1, sq2, sq3 ] = WINNINGLINES[line];
-    let numComputerSpots = 0;
-    let numEmptySpots = 0;
-
-    if (board[sq1] === HUMAN_MARKER) numComputerSpots += 1;
-    if (board[sq2] === HUMAN_MARKER) numComputerSpots += 1;
-    if (board[sq3] === HUMAN_MARKER) numComputerSpots += 1;
-    if (board[sq1] === INITIAL_MARKER) numEmptySpots += 1;
-    if (board[sq2] === INITIAL_MARKER) numEmptySpots += 1;
-    if (board[sq3] === INITIAL_MARKER) numEmptySpots += 1;
-
-    if (numComputerSpots === 2 && numEmptySpots === 1) {
-      return WINNINGLINES[line].find(sq => board[sq] === INITIAL_MARKER);
-    }
-  }
-  return null;
+  let move = minimax(board, 0, true);
+  // debugger;
+  board[move.index2] = COMPUTER_MARKER;
 }
 
 function boardFull(board) {
@@ -314,82 +222,137 @@ while (scores.human < MAX_WINS && scores.computer < MAX_WINS) {
 
 prompt('Thanks for playing Tic Tac Toe!');
 
+function getRemainingEmptySpots(board) {
+  let emptySpots = [];
+  for (let spot in board) {
+    if (board[spot] === INITIAL_MARKER) {
+      emptySpots.push(spot);
+    }
+  }
+  return emptySpots;
+}
+
 function minimax(board, depth, maximizingPlayer) {
   if (someoneWon(board) || boardFull(board)) {
     let zzz = minimaxMoveScore(board, depth);
-    debugger;
-    return zzz;
+    // debugger;
+    return {score: zzz};
   }
 
-  let movesRemaining = [];
-  for (let spot in board) {
-    if (board[spot] === INITIAL_MARKER) {
-      movesRemaining.push(spot);
-    }
-  }
+  let movesRemaining = getRemainingEmptySpots(board);
 
-  debugger;
-
-  let bestScore, score;
-
+  // debugger;
+  let player;
+  let moves = [];
   if (maximizingPlayer) {
-    bestScore = Number.NEGATIVE_INFINITY;
-
-    for (let i = 0; i < movesRemaining.length; i++) {
-      let emptySquare = movesRemaining[i];
-      let childBoard = Object.assign({}, board);
-      childBoard[emptySquare] = COMPUTER_MARKER;
-      score = minimax(childBoard, depth + 1, false);
-      bestScore = Math.max(bestScore, score);
-    }
-    let tempobj = {
-      move: emptySquare,
-      depth: depth,
-      score: score,
-      maximizingPlayer: maximizingPlayer,
-      bestScore: bestScore
-    };
-    globalMoves.push(tempobj);
-
-    return bestScore;
+    player = COMPUTER_MARKER;
   } else {
-    bestScore = Number.POSITIVE_INFINITY;
-
-    for (let i = 0; i < movesRemaining.length; i++) {
-      let emptySquare = movesRemaining[i];
-      let childBoard = Object.assign({}, board);
-      childBoard[emptySquare] = HUMAN_MARKER;
-      score = minimax(childBoard, depth + 1, true);
-      bestScore = Math.max(bestScore, score);
-    }
-    let tempobj = {
-      move: emptySquare,
-      depth: depth,
-      score: score,
-      maximizingPlayer: maximizingPlayer,
-      bestScore: bestScore
-    };
-    globalMoves.push(tempobj);
-
-    return bestScore;
+    player = HUMAN_MARKER;
   }
-  debugger;
-  console.log('******************SHOULDNT GET HERE*****************');
-  // return workingScore;
+
+  for (let i = 0; i < movesRemaining.length; i++) {
+    let currentMove = {};
+
+    currentMove.index = board[movesRemaining[i]];
+    currentMove.index2 = movesRemaining[i];
+
+    board[movesRemaining[i]] = player;
+
+    if (player === COMPUTER_MARKER) {
+      let result = minimax(board, depth + 1, false);
+      currentMove.score = result.score;
+    } else {
+      let result = minimax(board, depth + 1, true);
+      currentMove.score = result.score;
+    }
+
+    board[movesRemaining[i]] = currentMove.index;
+
+    moves.push(currentMove);
+  }
+
+  let bestMove;
+  if (player === COMPUTER_MARKER) {
+    let bestScore = Number.NEGATIVE_INFINITY;
+    for (let i = 0; i < moves.length; i++) {
+      if (moves[i].score > bestScore) {
+        bestScore = moves[i].score;
+        bestMove = i;
+      }
+    }
+  } else {
+    let bestScore = Number.POSITIVE_INFINITY;
+    for (let i = 0; i < moves.length; i++) {
+      if (moves[i].score < bestScore) {
+        bestScore = moves[i].score;
+        bestMove = i;
+      }
+    }
+  }
+
+  return moves[bestMove];
 }
+
+  // let bestScore = {};
+  // let score;
+
+  // if (maximizingPlayer) {
+  //   bestScore = Number.NEGATIVE_INFINITY;
+
+  //   for (let i = 0; i < movesRemaining.length; i++) {
+  //     let emptySquare = movesRemaining[i];
+  //     let childBoard = Object.assign({}, board);
+  //     childBoard[emptySquare] = COMPUTER_MARKER;
+  //     score = minimax(childBoard, depth + 1, false);
+  //     bestScore = Math.max(bestScore, score);
+
+  //     let tempobj = {
+  //       move: emptySquare,
+  //       depth: depth,
+  //       score: score,
+  //       maximizingPlayer: maximizingPlayer,
+  //       bestScore: bestScore
+  //     };
+  //     globalMoves.push(tempobj);
+
+  //   }
+  //   return bestScore;
+  // } else {
+  //   bestScore = Number.POSITIVE_INFINITY;
+
+  //   for (let i = 0; i < movesRemaining.length; i++) {
+  //     let emptySquare = movesRemaining[i];
+  //     let childBoard = Object.assign({}, board);
+  //     childBoard[emptySquare] = HUMAN_MARKER;
+  //     score = minimax(childBoard, depth + 1, true);
+  //     bestScore = Math.max(bestScore, score);
+
+  //     let tempobj = {
+  //       move: emptySquare,
+  //       depth: depth,
+  //       score: score,
+  //       maximizingPlayer: maximizingPlayer,
+  //       bestScore: bestScore
+  //     };
+  //     globalMoves.push(tempobj);
+
+  //   }
+  //   return bestScore;
+  // }
+// }
 
 
 function minimaxMoveScore(board, depth) {
   if (someoneWon(board)) {
     if (detectWinner(board) === 'Computer') {
-      debugger;
+      // debugger;
       return 10 - depth;
     } else {
-      debugger;
+      // debugger;
       return depth - 10;
     }
   } else {
-    debugger;
+    // debugger;
     return 0;
   }
 }
