@@ -234,31 +234,34 @@ function getRemainingEmptySpots(board) {
 
 function minimax(board, depth, maximizingPlayer) {
   if (someoneWon(board) || boardFull(board)) {
-    let zzz = minimaxMoveScore(board, depth);
-    // debugger;
-    return {score: zzz};
+    return {score: minimaxMoveScore(board, depth)};
   }
 
   let movesRemaining = getRemainingEmptySpots(board);
 
-  // debugger;
-  let player;
+  // let player;
   let moves = [];
-  if (maximizingPlayer) {
-    player = COMPUTER_MARKER;
-  } else {
-    player = HUMAN_MARKER;
-  }
+  // if (maximizingPlayer) {
+  //   player = COMPUTER_MARKER;
+  // } else {
+  //   player = HUMAN_MARKER;
+  // }
 
   for (let i = 0; i < movesRemaining.length; i++) {
     let currentMove = {};
 
+    //! needs better naming
     currentMove.index = board[movesRemaining[i]];
     currentMove.index2 = movesRemaining[i];
 
-    board[movesRemaining[i]] = player;
+    if (maximizingPlayer) {
+      board[movesRemaining[i]] = COMPUTER_MARKER;
+    } else {
+      board[movesRemaining[i]] = HUMAN_MARKER;
+    }
 
-    if (player === COMPUTER_MARKER) {
+    //! Combine into 1
+    if (maximizingPlayer) {
       let result = minimax(board, depth + 1, false);
       currentMove.score = result.score;
     } else {
@@ -272,7 +275,7 @@ function minimax(board, depth, maximizingPlayer) {
   }
 
   let bestMove;
-  if (player === COMPUTER_MARKER) {
+  if (maximizingPlayer) {
     let bestScore = Number.NEGATIVE_INFINITY;
     for (let i = 0; i < moves.length; i++) {
       if (moves[i].score > bestScore) {
@@ -345,14 +348,11 @@ function minimax(board, depth, maximizingPlayer) {
 function minimaxMoveScore(board, depth) {
   if (someoneWon(board)) {
     if (detectWinner(board) === 'Computer') {
-      // debugger;
       return 10 - depth;
     } else {
-      // debugger;
       return depth - 10;
     }
   } else {
-    // debugger;
     return 0;
   }
 }
