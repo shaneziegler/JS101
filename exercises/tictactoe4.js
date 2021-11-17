@@ -89,12 +89,7 @@ function playerChoosesSquare(board) {
 
 function computerChoosesSquare(board) {
   let move = minimax(board, 0, true);
-  // if (move.index !== INITIAL_MARKER) {
-  //   debugger;
-  //   console.log(move);
-  // }
-  // debugger;
-  board[move.index2] = COMPUTER_MARKER;
+  board[move.boardSpot] = COMPUTER_MARKER;
 }
 
 function boardFull(board) {
@@ -247,13 +242,16 @@ function minimax(board, depth, maximizingPlayer) {
 
   for (let idx = 0; idx < movesRemaining.length; idx++) {
     let currentMove = {
-      index: undefined,
-      index2: undefined,
+      boardSpot: undefined,
       score: undefined
     };
 
-    currentMove.index = board[movesRemaining[idx]];
-    currentMove.index2 = movesRemaining[idx];
+    // currentMove.index = board[movesRemaining[idx]];
+    // if (currentMove.index !== INITIAL_MARKER) {
+    //   debugger;
+    //   console.log(currentMove.index);
+    // }
+    currentMove.boardSpot = movesRemaining[idx];
 
     if (maximizingPlayer) {
       board[movesRemaining[idx]] = COMPUTER_MARKER;
@@ -264,7 +262,9 @@ function minimax(board, depth, maximizingPlayer) {
     let result = minimax(board, depth + 1, !maximizingPlayer);
     currentMove.score = result.score;
 
-    board[movesRemaining[idx]] = currentMove.index;
+    // board[movesRemaining[idx]] = currentMove.index;
+    board[movesRemaining[idx]] = INITIAL_MARKER;
+
 
     moves.push(currentMove);
   }
