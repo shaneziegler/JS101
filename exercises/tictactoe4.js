@@ -5,8 +5,6 @@
 // Lesson 6
 // Tic Tac Toe
 
-var globalMoves = [];
-
 const INITIAL_MARKER = ' ';
 const HUMAN_MARKER = 'X';
 const COMPUTER_MARKER = 'O';
@@ -237,7 +235,6 @@ function minimax(board, depth, maximizingPlayer) {
   }
 
   let movesRemaining = getRemainingEmptySpots(board);
-
   let moves = [];
 
   for (let idx = 0; idx < movesRemaining.length; idx++) {
@@ -246,11 +243,6 @@ function minimax(board, depth, maximizingPlayer) {
       score: undefined
     };
 
-    // currentMove.index = board[movesRemaining[idx]];
-    // if (currentMove.index !== INITIAL_MARKER) {
-    //   debugger;
-    //   console.log(currentMove.index);
-    // }
     currentMove.boardSpot = movesRemaining[idx];
 
     if (maximizingPlayer) {
@@ -261,11 +253,7 @@ function minimax(board, depth, maximizingPlayer) {
 
     let result = minimax(board, depth + 1, !maximizingPlayer);
     currentMove.score = result.score;
-
-    // board[movesRemaining[idx]] = currentMove.index;
     board[movesRemaining[idx]] = INITIAL_MARKER;
-
-
     moves.push(currentMove);
   }
 
