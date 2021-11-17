@@ -261,13 +261,12 @@ function minimax(board, depth, maximizingPlayer) {
     }
 
     //! Combine into 1
-    if (maximizingPlayer) {
-      let result = minimax(board, depth + 1, false);
-      currentMove.score = result.score;
-    } else {
-      let result = minimax(board, depth + 1, true);
-      currentMove.score = result.score;
-    }
+    // if (maximizingPlayer) {
+      currentMove.score = minimax(board, depth + 1, !maximizingPlayer);
+      // currentMove.score = result.score;
+    // } else {
+    //   currentMove.score = minimax(board, depth + 1, !maximizingPlayer);
+    // }
 
     board[movesRemaining[i]] = currentMove.index;
 
