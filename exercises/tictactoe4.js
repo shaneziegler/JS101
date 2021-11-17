@@ -89,6 +89,10 @@ function playerChoosesSquare(board) {
 
 function computerChoosesSquare(board) {
   let move = minimax(board, 0, true);
+  // if (move.index !== INITIAL_MARKER) {
+  //   debugger;
+  //   console.log(move);
+  // }
   // debugger;
   board[move.index2] = COMPUTER_MARKER;
 }
@@ -239,26 +243,28 @@ function minimax(board, depth, maximizingPlayer) {
 
   let movesRemaining = getRemainingEmptySpots(board);
 
-
   let moves = [];
 
-  for (let i = 0; i < movesRemaining.length; i++) {
-    let currentMove = {};
+  for (let idx = 0; idx < movesRemaining.length; idx++) {
+    let currentMove = {
+      index: undefined,
+      index2: undefined,
+      score: undefined
+    };
 
-    currentMove.index = board[movesRemaining[i]];
-    currentMove.index2 = movesRemaining[i];
+    currentMove.index = board[movesRemaining[idx]];
+    currentMove.index2 = movesRemaining[idx];
 
     if (maximizingPlayer) {
-      board[movesRemaining[i]] = COMPUTER_MARKER;
+      board[movesRemaining[idx]] = COMPUTER_MARKER;
     } else {
-      board[movesRemaining[i]] = HUMAN_MARKER;
+      board[movesRemaining[idx]] = HUMAN_MARKER;
     }
 
- 
     let result = minimax(board, depth + 1, !maximizingPlayer);
     currentMove.score = result.score;
 
-    board[movesRemaining[i]] = currentMove.index;
+    board[movesRemaining[idx]] = currentMove.index;
 
     moves.push(currentMove);
   }
@@ -266,18 +272,18 @@ function minimax(board, depth, maximizingPlayer) {
   let bestMove;
   if (maximizingPlayer) {
     let bestScore = Number.NEGATIVE_INFINITY;
-    for (let i = 0; i < moves.length; i++) {
-      if (moves[i].score > bestScore) {
-        bestScore = moves[i].score;
-        bestMove = i;
+    for (let idx = 0; idx < moves.length; idx++) {
+      if (moves[idx].score > bestScore) {
+        bestScore = moves[idx].score;
+        bestMove = idx;
       }
     }
   } else {
     let bestScore = Number.POSITIVE_INFINITY;
-    for (let i = 0; i < moves.length; i++) {
-      if (moves[i].score < bestScore) {
-        bestScore = moves[i].score;
-        bestMove = i;
+    for (let idx = 0; idx < moves.length; idx++) {
+      if (moves[idx].score < bestScore) {
+        bestScore = moves[idx].score;
+        bestMove = idx;
       }
     }
   }
