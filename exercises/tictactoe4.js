@@ -9,7 +9,7 @@
 const INITIAL_MARKER = ' ';
 const HUMAN_MARKER = 'X';
 const COMPUTER_MARKER = 'O';
-const MAX_WINS = 3;
+const MAX_WINS = 2;
 const WINNINGLINES = [
   [1, 2, 3], [4, 5, 6], [7, 8, 9], // rows
   [1, 4, 7], [2, 5, 8], [3, 6, 9], // columns
@@ -160,6 +160,18 @@ function getRemainingEmptySpots(board) {
   return emptySpots;
 }
 
+function minimaxMoveScore(board, depth) {
+  if (someoneWon(board)) {
+    if (detectWinner(board) === 'Computer') {
+      return 10 - depth;
+    } else {
+      return depth - 10;
+    }
+  } else {
+    return 0;
+  }
+}
+
 function minimax(board, depth, maximizingPlayer) {
   if (someoneWon(board) || boardFull(board)) {
     return {score: minimaxMoveScore(board, depth)};
@@ -210,17 +222,10 @@ function minimax(board, depth, maximizingPlayer) {
   return moves[bestMove];
 }
 
-
-function minimaxMoveScore(board, depth) {
-  if (someoneWon(board)) {
-    if (detectWinner(board) === 'Computer') {
-      return 10 - depth;
-    } else {
-      return depth - 10;
-    }
-  } else {
-    return 0;
-  }
+function refreshScreen(scores, board) {
+  console.clear();
+  displayScoresAndRound(scores);
+  displayBoard(board);
 }
 
 // Start of main program loop
@@ -229,35 +234,44 @@ let scores = initScores();
 
 while (scores.human < MAX_WINS && scores.computer < MAX_WINS) {
   let board = initializeBoard();
+  //! make it swap players each round
   let currentPlayer = FIRST_MOVE;
 
   while (true) {
-    console.clear();
-    displayScoresAndRound(scores);
-    displayBoard(board);
+    refreshScreen(scores, board);
 
     chooseSquare(currentPlayer, board);
-    if (someoneWon(board) || boardFull(board)) break;
+    // if (someoneWon(board) || boardFull(board)) break;
+    if (someoneWon(board)) {
+      refreshScreen(scores, board);
+      console.log(`*** ${detectWinner(board)} won this round! ***\n`);
+      updateScores(scores, board);
+      break;
+    } else if (boardFull(board)) {
+      refreshScreen(scores, board);
+      console.log("*** This round ends in a tie! ***\n");
+      updateScores(scores, board);
+      break;
+    }
     currentPlayer = switchPlayer(currentPlayer);
   }
 
-  console.clear();
-  displayScoresAndRound(scores);
-  displayBoard(board);
+  // console.clear();
+  // displayScoresAndRound(scores);
+  // displayBoard(board);
 
-  if (someoneWon(board)) {
-    console.log(`*** ${detectWinner(board)} won this round! ***\n`);
-    updateScores(scores, board);
-    readline.question('HIT ENTER TO BEGIN NEXT ROUND');
-  } else {
-    console.log("*** This round ends in a tie! ***\n");
-    updateScores(scores, board);
-    readline.question('HIT ENTER TO BEGIN NEXT ROUND');
-  }
+  // if (someoneWon(board)) {
+  //   console.log(`*** ${detectWinner(board)} won this round! ***\n`);
+  // } else {
+  //   console.log("*** This round ends in a tie! ***\n");
+  // }
+  // updateScores(scores, board);
+  //! add or hit q to quit
+  readline.question('HIT ENTER TO BEGIN NEXT ROUND or cntl-c to quit');
 
-  if (!(scores.computer < 5 && scores.human < 5)) {
+  if (!(scores.computer < MAX_WINS && scores.human < MAX_WINS)) {
     let playAgainAnswer;
-
+    debugger;
     do {
       prompt('Play again? (y or n)');
       playAgainAnswer = readline.question().toLowerCase().trim();
@@ -272,4 +286,3 @@ while (scores.human < MAX_WINS && scores.computer < MAX_WINS) {
 }
 
 prompt('Thanks for playing Tic Tac Toe!');
-
