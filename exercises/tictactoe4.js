@@ -15,9 +15,10 @@ const WINNINGLINES = [
   [1, 4, 7], [2, 5, 8], [3, 6, 9], // columns
   [1, 5, 9], [3, 5, 7]             // diagonals
 ];
-const FIRST_MOVE = "Computer"; // "Player" or "Computer"
+const FIRST_MOVE = "Player"; // "Player" or "Computer"
 const VALID_YES_NO = ['y', 'n', 'yes', 'no'];
-const VALID_YES = ['y', 'yes'];
+//const VALID_YES = ['y', 'yes'];
+const VALID_QUIT = ['q', 'quit'];
 const VALID_NO = ['n', 'no'];
 const readline = require('readline-sync');
 
@@ -93,16 +94,14 @@ function detectWinner(board) {
   for (let line = 0; line < WINNINGLINES.length; line++) {
     let [ sq1, sq2, sq3 ] = WINNINGLINES[line];
 
-    if (
-        board[sq1] === HUMAN_MARKER &&
+    if (board[sq1] === HUMAN_MARKER &&
         board[sq2] === HUMAN_MARKER &&
         board[sq3] === HUMAN_MARKER
     ) {
       return 'Player';
-    } else if (
-        board[sq1] === COMPUTER_MARKER &&
-        board[sq2] === COMPUTER_MARKER &&
-        board[sq3] === COMPUTER_MARKER
+    } else if ( board[sq1] === COMPUTER_MARKER &&
+                board[sq2] === COMPUTER_MARKER &&
+                board[sq3] === COMPUTER_MARKER
     ) {
       return 'Computer';
     }
@@ -228,51 +227,44 @@ function refreshScreen(scores, board) {
   displayBoard(board);
 }
 
-// Start of main program loop
+// Start of main game play loop
 
 let scores = initScores();
+let currentPlayer = FIRST_MOVE;
 
 while (scores.human < MAX_WINS && scores.computer < MAX_WINS) {
   let board = initializeBoard();
-  //! make it swap players each round
-  let currentPlayer = FIRST_MOVE;
 
   while (true) {
     refreshScreen(scores, board);
-
     chooseSquare(currentPlayer, board);
-    // if (someoneWon(board) || boardFull(board)) break;
+
     if (someoneWon(board)) {
       refreshScreen(scores, board);
       console.log(`*** ${detectWinner(board)} won this round! ***\n`);
       updateScores(scores, board);
+      currentPlayer = switchPlayer(currentPlayer);
       break;
     } else if (boardFull(board)) {
       refreshScreen(scores, board);
       console.log("*** This round ends in a tie! ***\n");
       updateScores(scores, board);
+      currentPlayer = switchPlayer(currentPlayer);
       break;
     }
     currentPlayer = switchPlayer(currentPlayer);
   }
 
-  // console.clear();
-  // displayScoresAndRound(scores);
-  // displayBoard(board);
-
-  // if (someoneWon(board)) {
-  //   console.log(`*** ${detectWinner(board)} won this round! ***\n`);
-  // } else {
-  //   console.log("*** This round ends in a tie! ***\n");
-  // }
-  // updateScores(scores, board);
-  //! add or hit q to quit
-  readline.question('HIT ENTER TO BEGIN NEXT ROUND or cntl-c to quit');
-
   if (!(scores.computer < MAX_WINS && scores.human < MAX_WINS)) {
     let playAgainAnswer;
-    debugger;
+
     do {
+      if (scores.player === MAX_WINS) {
+        console.log(`*** YOU WON THE GAME!!! ***\n`);
+      } else {
+        console.log(`*** THE COMPUTER WON THE GAME!!! ***\n`);
+      }
+debugger;
       prompt('Play again? (y or n)');
       playAgainAnswer = readline.question().toLowerCase().trim();
 
@@ -282,6 +274,9 @@ while (scores.human < MAX_WINS && scores.computer < MAX_WINS) {
     } while (!VALID_YES_NO.includes(playAgainAnswer));
 
     if (VALID_NO.includes(playAgainAnswer)) break;
+  } else {
+    let nextRound = readline.question('HIT ENTER TO BEGIN NEXT ROUND or ENTER Q TO QUIT: ').toLowerCase().trim();
+    if (VALID_QUIT.includes(nextRound)) break;
   }
 }
 
