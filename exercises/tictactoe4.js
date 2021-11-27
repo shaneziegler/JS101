@@ -227,57 +227,63 @@ function refreshScreen(scores, board) {
   displayBoard(board);
 }
 
+function playGame(currentPlayer) {
+  let scores = initScores();
+
+  while (scores.human < MAX_WINS && scores.computer < MAX_WINS) {
+    let board = initializeBoard();
+
+    while (true) {
+      refreshScreen(scores, board);
+      chooseSquare(currentPlayer, board);
+
+      if (someoneWon(board)) {
+        refreshScreen(scores, board);
+        console.log(`*** ${detectWinner(board)} won this round! ***\n`);
+        updateScores(scores, board);
+        currentPlayer = switchPlayer(currentPlayer);
+        break;
+      } else if (boardFull(board)) {
+        refreshScreen(scores, board);
+        console.log("*** This round ends in a tie! ***\n");
+        updateScores(scores, board);
+        currentPlayer = switchPlayer(currentPlayer);
+        break;
+      }
+      currentPlayer = switchPlayer(currentPlayer);
+    }
+
+    if (!(scores.computer < MAX_WINS && scores.human < MAX_WINS)) {
+      let playAgainAnswer;
+
+      do {
+        if (scores.player === MAX_WINS) {
+          console.log(`*** YOU WON THE GAME!!! ***\n`);
+        } else {
+          console.log(`*** THE COMPUTER WON THE GAME!!! ***\n`);
+        }
+  debugger;
+        prompt('Play again? (y or n)');
+        playAgainAnswer = readline.question().toLowerCase().trim();
+
+        if (!VALID_YES_NO.includes(playAgainAnswer)) {
+          console.log('That is not a valid response, please try again...');
+        }
+      } while (!VALID_YES_NO.includes(playAgainAnswer));
+
+      if (VALID_NO.includes(playAgainAnswer)) break;
+    } else {
+      let nextRound = readline.question('HIT ENTER TO BEGIN NEXT ROUND or ENTER Q TO QUIT: ').toLowerCase().trim();
+      if (VALID_QUIT.includes(nextRound)) break;
+    }
+  }
+
+}
+
 // Start of main game play loop
 
-let scores = initScores();
 let currentPlayer = FIRST_MOVE;
 
-while (scores.human < MAX_WINS && scores.computer < MAX_WINS) {
-  let board = initializeBoard();
-
-  while (true) {
-    refreshScreen(scores, board);
-    chooseSquare(currentPlayer, board);
-
-    if (someoneWon(board)) {
-      refreshScreen(scores, board);
-      console.log(`*** ${detectWinner(board)} won this round! ***\n`);
-      updateScores(scores, board);
-      currentPlayer = switchPlayer(currentPlayer);
-      break;
-    } else if (boardFull(board)) {
-      refreshScreen(scores, board);
-      console.log("*** This round ends in a tie! ***\n");
-      updateScores(scores, board);
-      currentPlayer = switchPlayer(currentPlayer);
-      break;
-    }
-    currentPlayer = switchPlayer(currentPlayer);
-  }
-
-  if (!(scores.computer < MAX_WINS && scores.human < MAX_WINS)) {
-    let playAgainAnswer;
-
-    do {
-      if (scores.player === MAX_WINS) {
-        console.log(`*** YOU WON THE GAME!!! ***\n`);
-      } else {
-        console.log(`*** THE COMPUTER WON THE GAME!!! ***\n`);
-      }
-debugger;
-      prompt('Play again? (y or n)');
-      playAgainAnswer = readline.question().toLowerCase().trim();
-
-      if (!VALID_YES_NO.includes(playAgainAnswer)) {
-        console.log('That is not a valid response, please try again...');
-      }
-    } while (!VALID_YES_NO.includes(playAgainAnswer));
-
-    if (VALID_NO.includes(playAgainAnswer)) break;
-  } else {
-    let nextRound = readline.question('HIT ENTER TO BEGIN NEXT ROUND or ENTER Q TO QUIT: ').toLowerCase().trim();
-    if (VALID_QUIT.includes(nextRound)) break;
-  }
-}
+playGame(currentPlayer);
 
 prompt('Thanks for playing Tic Tac Toe!');
