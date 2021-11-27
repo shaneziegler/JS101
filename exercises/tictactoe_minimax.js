@@ -209,26 +209,7 @@ function minimax(board, depth, maximizingPlayer) {
     moves.push(currentMove);
   }
 
-  // let bestMove;
-  // if (maximizingPlayer) {
-  //   let bestScore = Number.NEGATIVE_INFINITY;
-  //   for (let idx = 0; idx < moves.length; idx++) {
-  //     if (moves[idx].score > bestScore) {
-  //       bestScore = moves[idx].score;
-  //       bestMove = idx;
-  //     }
-  //   }
-  // } else {
-  //   let bestScore = Number.POSITIVE_INFINITY;
-  //   for (let idx = 0; idx < moves.length; idx++) {
-  //     if (moves[idx].score < bestScore) {
-  //       bestScore = moves[idx].score;
-  //       bestMove = idx;
-  //     }
-  //   }
-  // }
-
-  return moves[bestMove];
+  return moves[minimaxGetBestMove];
 }
 
 function minimaxGetBestMove(maximizingPlayer, moves) {
