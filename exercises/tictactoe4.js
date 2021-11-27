@@ -1,5 +1,3 @@
-//* eslint-disable max-statements */
-//* eslint-disable max-lines-per-function */
 // JS101
 // Lesson 6
 // Tic Tac Toe - Bonus Features
@@ -16,7 +14,6 @@ const WINNINGLINES = [
 ];
 const FIRST_MOVE = "Player"; // "Player" or "Computer"
 const VALID_YES_NO = ['y', 'n', 'yes', 'no'];
-//const VALID_YES = ['y', 'yes'];
 const VALID_QUIT = ['q', 'quit'];
 const VALID_NO = ['n', 'no'];
 const readline = require('readline-sync');
@@ -196,10 +193,7 @@ function minimax(board, depth, maximizingPlayer) {
   let moves = [];
 
   for (let idx = 0; idx < movesRemaining.length; idx++) {
-    let currentMove = {
-      boardSpot: undefined,
-      score: undefined
-    };
+    let currentMove = {};
 
     currentMove.boardSpot = movesRemaining[idx];
 
@@ -237,6 +231,28 @@ function minimax(board, depth, maximizingPlayer) {
   return moves[bestMove];
 }
 
+function minimaxGetBestMove(maximizingPlayer, moves) {
+  let bestMove;
+  
+  if (maximizingPlayer) {
+    let bestScore = Number.NEGATIVE_INFINITY;
+    for (let idx = 0; idx < moves.length; idx++) {
+      if (moves[idx].score > bestScore) {
+        bestScore = moves[idx].score;
+        bestMove = idx;
+      }
+    }
+  } else {
+    let bestScore = Number.POSITIVE_INFINITY;
+    for (let idx = 0; idx < moves.length; idx++) {
+      if (moves[idx].score < bestScore) {
+        bestScore = moves[idx].score;
+        bestMove = idx;
+      }
+    }
+  }
+  return bestMove;
+}
 
 function refreshScreen(scores, board) {
   console.clear();
@@ -253,19 +269,18 @@ function playRound(currentPlayer, board, scores) {
     if (someoneWon(board)) {
       refreshScreen(scores, board);
       console.log(`*** ${detectWinner(board)} won this round! ***\n`);
-      updateScores(scores, board);
-      currentPlayer = switchPlayer(currentPlayer);
-      break;
     } else if (boardFull(board)) {
       refreshScreen(scores, board);
       console.log("*** This round ends in a tie! ***\n");
+    }
+
+    if (someoneWon(board) || boardFull(board)) {
       updateScores(scores, board);
-      currentPlayer = switchPlayer(currentPlayer);
       break;
     }
+
     currentPlayer = switchPlayer(currentPlayer);
   }
-  return currentPlayer;
 }
 
 
@@ -275,7 +290,7 @@ function playGame(currentPlayer) {
   while (scores.human < MAX_WINS && scores.computer < MAX_WINS) {
     let board = initializeBoard();
 
-    currentPlayer = playRound(currentPlayer, board, scores);
+    playRound(currentPlayer, board, scores);
 
     if (!(scores.computer < MAX_WINS && scores.human < MAX_WINS)) {
       if (scores.player === MAX_WINS) {
@@ -287,6 +302,7 @@ function playGame(currentPlayer) {
       let nextRound = readline.question('HIT ENTER/RETURN TO BEGIN NEXT ROUND or ENTER Q TO QUIT CURRENT GAME: ').toLowerCase().trim();
       if (VALID_QUIT.includes(nextRound)) break;
     }
+    currentPlayer = switchPlayer(currentPlayer);
   }
 }
 
