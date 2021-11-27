@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 // JS101
 // Lesson 6
 // Tic Tac Toe - Bonus Features
@@ -209,7 +210,27 @@ function minimax(board, depth, maximizingPlayer) {
     moves.push(currentMove);
   }
 
-  return moves[minimaxGetBestMove];
+  let bestMove;
+
+  if (maximizingPlayer) {
+    let bestScore = Number.NEGATIVE_INFINITY;
+    for (let idx = 0; idx < moves.length; idx++) {
+      if (moves[idx].score > bestScore) {
+        bestScore = moves[idx].score;
+        bestMove = idx;
+      }
+    }
+  } else {
+    let bestScore = Number.POSITIVE_INFINITY;
+    for (let idx = 0; idx < moves.length; idx++) {
+      if (moves[idx].score < bestScore) {
+        bestScore = moves[idx].score;
+        bestMove = idx;
+      }
+    }
+  }
+  // return bestMove;
+  return moves[bestMove];
 }
 
 function minimaxGetBestMove(maximizingPlayer, moves) {
