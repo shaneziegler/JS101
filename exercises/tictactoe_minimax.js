@@ -1,4 +1,3 @@
-/* eslint-disable max-lines-per-function */
 // JS101
 // Lesson 6
 // Tic Tac Toe - Bonus Features
@@ -13,7 +12,8 @@ const WINNINGLINES = [
   [1, 4, 7], [2, 5, 8], [3, 6, 9], // columns
   [1, 5, 9], [3, 5, 7]             // diagonals
 ];
-const FIRST_MOVE = "Player"; // "Player" or "Computer"
+
+const VALID_PLAYER = ['p', 'c', 'player', 'computer', 'play', 'comp'];
 const VALID_YES_NO = ['y', 'n', 'yes', 'no'];
 const VALID_QUIT = ['q', 'quit'];
 const VALID_NO = ['n', 'no'];
@@ -184,14 +184,21 @@ function minimaxMoveScore(board, depth) {
   }
 }
 
-
 function minimax(board, depth, maximizingPlayer) {
   if (someoneWon(board) || boardFull(board)) {
     return {score: minimaxMoveScore(board, depth)};
   }
 
-  let movesRemaining = getRemainingEmptySpots(board);
   let moves = [];
+  minimaxTraverseBoard(board, moves, maximizingPlayer, depth);
+
+  let bestMove = minimaxGetBestMove(maximizingPlayer, moves);
+
+  return moves[bestMove];
+}
+
+function minimaxTraverseBoard(board, moves, maximizingPlayer, depth) {
+  let movesRemaining = getRemainingEmptySpots(board);
 
   for (let idx = 0; idx < movesRemaining.length; idx++) {
     let currentMove = {};
@@ -209,28 +216,6 @@ function minimax(board, depth, maximizingPlayer) {
     board[movesRemaining[idx]] = INITIAL_MARKER;
     moves.push(currentMove);
   }
-
-  let bestMove;
-
-  if (maximizingPlayer) {
-    let bestScore = Number.NEGATIVE_INFINITY;
-    for (let idx = 0; idx < moves.length; idx++) {
-      if (moves[idx].score > bestScore) {
-        bestScore = moves[idx].score;
-        bestMove = idx;
-      }
-    }
-  } else {
-    let bestScore = Number.POSITIVE_INFINITY;
-    for (let idx = 0; idx < moves.length; idx++) {
-      if (moves[idx].score < bestScore) {
-        bestScore = moves[idx].score;
-        bestMove = idx;
-      }
-    }
-  }
-  // return bestMove;
-  return moves[bestMove];
 }
 
 function minimaxGetBestMove(maximizingPlayer, moves) {
@@ -253,8 +238,10 @@ function minimaxGetBestMove(maximizingPlayer, moves) {
       }
     }
   }
+
   return bestMove;
 }
+
 
 function refreshScreen(scores, board) {
   console.clear();
@@ -308,10 +295,30 @@ function playGame(currentPlayer) {
   }
 }
 
+function chooseStartingPlayer() {
+  let startingPlayer;
+
+  console.clear();
+  do {
+    prompt('Who should go first, player or computer? (p/c)');
+    startingPlayer = readline.question().toLowerCase().trim();
+
+    if (!VALID_PLAYER.includes(startingPlayer)) {
+      console.log('That is not a valid response, please try again...');
+    }
+  } while (!VALID_PLAYER.includes(startingPlayer));
+  if (startingPlayer.charAt(0) === 'p') {
+    return 'Player';
+  } else {
+    return 'Computer';
+  }
+}
+
+
 // Start of main game play loop
 
 while (true) {
-  let currentPlayer = FIRST_MOVE;
+  let currentPlayer = chooseStartingPlayer();
   playGame(currentPlayer);
 
   let playAgainAnswer;
@@ -326,3 +333,4 @@ while (true) {
   if (VALID_NO.includes(playAgainAnswer)) break;
 }
 prompt('Thanks for playing Tic Tac Toe!');
+
