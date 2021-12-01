@@ -6,6 +6,14 @@ const FACE_CARDS = ['Jack', 'Queen', 'King'];
 const ACE = ['Ace'];
 const NUMERAL_CARDS = ['2', '3', '4', '5', '6' ,'7', '8', '9'];
 
+let readline = require('readline-sync');
+const SUITS_SYMBOLS = {
+  H: '♥',
+  D: '♦',
+  C: '♣',
+  S: '♠',
+};
+
 function initializeDeck() {
   let deck = [];
 
