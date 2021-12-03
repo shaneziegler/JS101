@@ -28,10 +28,10 @@ function initializeDeck() {
   console.log(deck);
 }
 
-function shuffle(array) {
-  for (let index = array.length - 1; index > 0; index--) {
-    let otherIndex = Math.floor(Math.random() * (index + 1)); // 0 to index
-    [array[index], array[otherIndex]] = [array[otherIndex], array[index]]; // swap elements
+function shuffle(deck) {
+  for (let idx = deck.length - 1; idx > 0; idx--) {
+    let randomIndex = Math.floor(Math.random() * (idx + 1)); // 0 to current index
+    [deck[idx], deck[randomIndex]] = [deck[randomIndex], deck[idx]]; // swap cards
   }
 }
 
