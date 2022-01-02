@@ -145,3 +145,13 @@ The variable `pets` is initialized and assigned to an array `[ 'dragon', 'turtle
 // ### When do we say that a function has side effects? Give an example to demonstrate it.
 
 // ### What are the three ways to define a function in JS? Give an example for each.
+
+table
+
+log
+
+
+console.log('');
+
+The array method pop() removes the last element from the array and returns that element, the method is destructive and mutates the calling array.
+
