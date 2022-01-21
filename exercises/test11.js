@@ -20,3 +20,34 @@ function test1(a) {
 
 
 
+let greeting = 'Hello';
+
+while (true) {
+  greeting = 'Hi';
+  break;
+}
+
+console.log(greeting);
+
+
+
+let bottles = 10;
+
+function decrementBottles(bottles) {
+  console.log('first');
+  console.log(bottles);
+  console.log('second');
+  bottles -= 1;
+  console.log('third');
+  console.log(bottles);
+  console.log('fourth');
+}
+
+decrementBottles(); // undefined
+console.log(bottles); // 10
+
+let arr = [1,2,3];
+
+arr.slice()
+
+
